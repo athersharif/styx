@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "name": "db-service",
+      "id": "service-db-3",
+      "address": "localhost",
+      "port": 5432,
+      "checks": [
+        {
+          "tcp": "localhost:5432",
+          "interval": "5s"
+        }
+      ]
+    },
+    {
+      "name": "db-server",
+      "id": "server-db-3",
+      "address": "localhost",
+      "port": 80,
+      "checks": [
+        {
+          "tcp": "localhost:80",
+          "interval": "5s"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "bootstrap_expect": 1,
+  "client_addr": "0.0.0.0",
+  "bind_addr": "0.0.0.0",
+  "datacenter": "dc1",
+  "log_level": "INFO",
+  "server": true,
+  "start_join": [
+    "styx-consul-server-1",
+    "styx-consul-server-2",
+    "styx-consul-server-3"
+  ],
+  "watches": [
+    {
+      "type": "checks",
+      "handler_type": "http",
+      "http_handler_config": {
+        "path": "http://localhost/adjustchain",
+        "timeout": "10s"
+      }
+    }
+  ],
+  "ui": true
+}

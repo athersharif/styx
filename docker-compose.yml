@@ -1,0 +1,124 @@
+version: '3.5'
+
+x-styx-db: &styx-db
+  build: ./db
+  expose: 
+    - "5432"
+  command: "postgres -c 'shared_buffers=256MB' -c 'max_connections=1000'"
+  volumes:
+    - "./db/init.sh:/docker-entrypoint-initdb.d/init.sh"
+    - "./db/schema.sql:/opt/server/schema.sql"
+    - "./db/server:/opt/server/"
+    - "./db/agent/config:/consul/all-configs"
+    - "./shared:/opt/server/src/shared"      
+    - "/opt/server/node_modules"
+  environment:
+    - NODE_ENV=development    
+    - PGUSER=styx_admin
+    - PGDATABASE=styx_db
+    - POSTGRES_HOST_AUTH_METHOD=trust
+
+x-styx-consul: &styx-consul 
+  image: consul:latest
+  command: agent
+
+x-styx-consul-server: &styx-consul-server 
+  <<: *styx-consul
+  volumes:
+    - "./consul/server/config:/consul/config"
+  depends_on:
+    - styx-db-1
+    - styx-db-2
+    - styx-db-3                  
+    - styx-db-4                  
+    - styx-db-5                          
+  
+x-styx-nodejs-server: &styx-nodejs-server 
+  image: node:alpine
+  working_dir: /opt/server/src
+  environment:
+    - NODE_ENV=development
+  command: sh -c "npm install && npm start"
+
+services:
+  styx-controller:
+    container_name: styx-controller
+    build: ./consul/control
+    volumes: 
+      - "./consul/control/config:/consul/config"
+      - "./consul/control/server:/opt/server/"
+      - "./shared:/opt/server/src/shared"
+      - "/opt/server/node_modules"
+    ports: 
+      - "8500:8500"
+      - "7000:80"
+    depends_on:
+      - styx-consul-server-1
+      - styx-consul-server-2
+      - styx-consul-server-3
+    environment:
+      - NODE_ENV=development
+    command: agent
+
+  styx-consul-server-1: 
+    <<: *styx-consul-server    
+    container_name: styx-consul-server-1
+    
+  styx-consul-server-2:
+    <<: *styx-consul-server
+    container_name: styx-consul-server-2
+
+  styx-consul-server-3:
+    <<: *styx-consul-server
+    container_name: styx-consul-server-3
+
+  styx-db-1:
+    <<: *styx-db
+    container_name: styx-db-1 
+    ports:
+      - "5441:5432"              
+
+  styx-db-2: 
+    <<: *styx-db
+    container_name: styx-db-2
+    ports:
+      - "5442:5432"                  
+
+  styx-db-3: 
+    <<: *styx-db
+    container_name: styx-db-3
+    ports:
+      - "5443:5432"              
+
+  styx-db-4: 
+    <<: *styx-db
+    container_name: styx-db-4
+    ports:
+      - "5444:5432"              
+
+  styx-db-5: 
+    <<: *styx-db
+    container_name: styx-db-5  
+    ports:
+      - "5445:5432"                  
+
+  styx-benchmark-server:
+    <<: *styx-nodejs-server
+    container_name: styx-benchmark-server    
+    volumes:
+      - "./benchmark/server:/opt/server/"
+      - "./shared:/opt/server/src/shared"      
+      - "/opt/server/node_modules"    
+    ports:
+      - 4001:80
+
+  styx-example-server:
+    <<: *styx-nodejs-server
+    container_name: styx-example-server    
+    volumes:
+      - "./example/server:/opt/server/"
+      - "./shared:/opt/server/src/shared"      
+      - "/opt/server/node_modules"    
+    ports:
+      - 4002:80      
+  

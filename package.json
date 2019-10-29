@@ -1,0 +1,18 @@
+{
+  "name": "styx",
+  "version": "1.0.0",
+  "description": "Styx++ is an easy-to-integrate open-source solution that bundles together existing tools and concepts, providing researchers outside of the systems domain with a reliable distributed system for their database needs.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint benchmark/ consul/ db/ example/ shared/",
+    "prettier": "prettier --single-quote --write '**/*.{js,css,json}'"
+  },
+  "author": "Ather Sharif <ather.sharif@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
+    "prettier": "^1.18.2"
+  }
+}

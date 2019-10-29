@@ -1,0 +1,23 @@
+{
+  "bootstrap_expect": 3,
+  "client_addr": "0.0.0.0",
+  "bind_addr": "0.0.0.0",
+  "datacenter": "dc1",
+  "log_level": "INFO",
+  "server": true,
+  "start_join": [
+    "styx-db-1",
+    "styx-db-2",
+    "styx-db-3",
+    "styx-db-4",
+    "styx-db-5"
+  ],
+  "retry_join": [
+    "styx-db-1",
+    "styx-db-2",
+    "styx-db-3",
+    "styx-db-4",
+    "styx-db-5"
+  ],
+  "ui": true
+}
