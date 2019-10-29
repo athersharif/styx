@@ -1,0 +1,40 @@
+{
+  "services": [
+    {
+      "name": "servers",
+      "id": "styx-consul-server-1",
+      "address": "styx-consul-server-1",
+      "port": 8500,
+      "checks": [
+        {
+          "tcp": "styx-consul-server-1:8500",
+          "interval": "10s"
+        }
+      ]
+    },
+    {
+      "name": "servers",
+      "id": "styx-consul-server-2",
+      "address": "styx-consul-server-2",
+      "port": 8500,
+      "checks": [
+        {
+          "tcp": "styx-consul-server-2:8500",
+          "interval": "10s"
+        }
+      ]
+    },
+    {
+      "name": "servers",
+      "id": "styx-consul-server-3",
+      "address": "styx-consul-server-3",
+      "port": 8500,
+      "checks": [
+        {
+          "tcp": "styx-consul-server-3:8500",
+          "interval": "10s"
+        }
+      ]
+    }
+  ]
+}

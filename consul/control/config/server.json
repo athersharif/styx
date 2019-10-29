@@ -1,0 +1,27 @@
+{
+  "bootstrap_expect": 3,
+  "client_addr": "0.0.0.0",
+  "datacenter": "dc1",
+  "data_dir": "/var/consul",
+  "domain": "consul",
+  "enable_script_checks": true,
+  "leave_on_terminate": true,
+  "log_level": "debug",
+  "rejoin_after_leave": true,
+  "server": true,
+  "start_join": [
+    "styx-consul-server-1",
+    "styx-consul-server-2",
+    "styx-consul-server-3"
+  ],
+  "watches": [
+    {
+      "type": "checks",
+      "handler_type": "http",
+      "http_handler_config": {
+        "path": "http://styx-master/adjustchain"
+      }
+    }
+  ],
+  "ui": true
+}
