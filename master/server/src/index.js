@@ -17,9 +17,9 @@ app.post('/adjustchain', async (req, res) => {
 app.post('/read', async (req, res) => {
   console.log('read operation');
 
-  await performReadOperation();
+  const response = await performReadOperation(req);
 
-  return res.status(200).send('some response');
+  return res.status(response.status).send(response);
 });
 
 app.post('/write', async (req, res) => {
@@ -28,8 +28,16 @@ app.post('/write', async (req, res) => {
   return res.status(200);
 });
 
-app.listen(port, async () => {
-  await adjustChain();
+app.listen(port, () => {
+  recheckChain();
 
   console.log(`Master server listening on port ${port}!`);
 });
+
+// because consul keeps throwing this stupid context deadline error
+const recheckChain = () => {
+  setTimeout(async () => {
+    await adjustChain(false);
+    recheckChain();
+  }, 2000);
+};

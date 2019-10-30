@@ -1,14 +1,27 @@
 {
-  "service": {
-    "name": "db",
-    "id": "styx-db-4",
-    "address": "styx-db-4",
-    "port": 5432,
-    "checks": [
-      {
-        "tcp": "styx-db-4:5432",
-        "interval": "10s"
-      }
-    ]
-  }
+  "services": [
+    {
+      "name": "db-service",
+      "id": "styx-db-4",
+      "address": "styx-db-4",
+      "port": 5432,
+      "checks": [
+        {
+          "tcp": "styx-db-4:5432",
+          "interval": "5s"
+        }
+      ]
+    },
+    {
+      "name": "db-server",
+      "address": "styx-db-4",
+      "port": 80,
+      "checks": [
+        {
+          "tcp": "styx-db-4:80",
+          "interval": "5s"
+        }
+      ]
+    }
+  ]
 }

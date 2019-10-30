@@ -1,5 +1,7 @@
 FROM node:10.15.3-stretch-slim
 
+RUN apt-get update && apt-get install g++ make python -y
+
 RUN mkdir /opt/server
 WORKDIR /opt/server
 

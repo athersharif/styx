@@ -1,13 +1,9 @@
 {
   "bootstrap_expect": 3,
   "client_addr": "0.0.0.0",
+  "bind_addr": "0.0.0.0",
   "datacenter": "dc1",
-  "data_dir": "/var/consul",
-  "domain": "consul",
-  "enable_script_checks": true,
-  "leave_on_terminate": true,
   "log_level": "INFO",
-  "rejoin_after_leave": true,
   "server": true,
   "start_join": [
     "styx-consul-agent-1",

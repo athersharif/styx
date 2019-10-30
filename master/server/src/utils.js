@@ -3,6 +3,8 @@ import range from 'lodash/range';
 import max from 'lodash/max';
 import uniq from 'lodash/uniq';
 import log4js from 'log4js';
+import fetch from 'node-fetch';
+import { sleep } from 'sleep';
 
 log4js.configure({
   appenders: { console: { type: 'console' } },
@@ -24,9 +26,9 @@ const getCurrentChain = async () => {
   return chain;
 };
 
-export const adjustChain = async () => {
+export const adjustChain = async (fromWatcher = true) => {
   const nodes = await getDBNodes();
-  const chain = await createChain(nodes);
+  const chain = await createChain(nodes, fromWatcher);
 
   await consul.kv.set('chain', JSON.stringify(chain));
 
@@ -37,7 +39,7 @@ export const getDBNodes = async () => {
   let nodes = [];
 
   try {
-    nodes = (await consul.health.checks('db'))[0]
+    nodes = (await consul.health.checks('db-service'))[0]
       .map(n => ({
         ...n,
         address: n.ServiceID
@@ -50,12 +52,14 @@ export const getDBNodes = async () => {
   return nodes;
 };
 
-export const createChain = async nodes => {
+export const createChain = async (nodes, fromWatcher) => {
   const currentChain = await getCurrentChain();
   const totalNodes = nodes.length;
 
   if (totalNodes === 0) {
-    logger.warn('All nodes have failed.');
+    if (fromWatcher) {
+      logger.warn('All nodes have failed.');
+    }
 
     return {
       head: null,
@@ -160,7 +164,9 @@ export const createChain = async nodes => {
 
       return chain;
     } else {
-      logger.info(`Chain not modified: ${JSON.stringify(currentChain)}`);
+      if (fromWatcher) {
+        logger.info(`Chain not modified: ${JSON.stringify(currentChain)}`);
+      }
 
       return currentChain;
     }
@@ -169,20 +175,36 @@ export const createChain = async nodes => {
 
 export const performReadOperation = async request => {
   let chain = await getCurrentChain();
+  let response = {
+    error: 'Unknown error occurred',
+    status: 500
+  };
 
   if (!chain) {
     chain = await adjustChain();
   }
 
-  const targetNode = chain.tail;
+  logger.info(`Making a read request to: ${chain.tail}`);
 
-  // send the query to target
-  // get the response back
-  // return the response
+  try {
+    response = await fetch(`http://${chain.tail}/read`, {
+      method: 'POST',
+      body: request.body
+    });
 
-  console.log(targetNode);
+    response = {
+      ...(await response.json()),
+      status: response.status
+    };
 
-  const response = '';
+    logger.info('Read request response received. Forwarding to client.');
+  } catch (err) {
+    logger.warn(err);
+    response = {
+      error: 'Error fetching the response. Please try again.',
+      status: 500
+    };
+  }
 
   return response;
 };
