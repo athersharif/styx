@@ -4,7 +4,8 @@ import max from 'lodash/max';
 import uniq from 'lodash/uniq';
 import log4js from 'log4js';
 import fetch from 'node-fetch';
-import { sleep } from 'sleep';
+//import { sleep } from 'sleep';
+import crypto from 'crypto';
 
 log4js.configure({
   appenders: { console: { type: 'console' } },
@@ -12,6 +13,12 @@ log4js.configure({
 });
 
 const logger = log4js.getLogger();
+
+const generateHash = value =>
+  `${crypto
+    .createHash('md5')
+    .update(value)
+    .digest('hex')}.${Date.now()}`;
 
 const getCurrentChain = async () => {
   let chain = null;
@@ -189,7 +196,11 @@ export const performReadOperation = async request => {
   try {
     response = await fetch(`http://${chain.tail}/read`, {
       method: 'POST',
-      body: request.body
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request.body)
     });
 
     response = {
@@ -198,6 +209,66 @@ export const performReadOperation = async request => {
     };
 
     logger.info('Read request response received. Forwarding to client.');
+  } catch (err) {
+    logger.warn(err);
+    response = {
+      error: 'Error fetching the response. Please try again.',
+      status: 500
+    };
+  }
+
+  return response;
+};
+
+export const performWriteOperation = async request => {
+  let chain = await getCurrentChain();
+  let response = {
+    error: 'Unknown error occurred',
+    status: 500
+  };
+
+  if (!chain) {
+    chain = await adjustChain();
+  }
+
+  try {
+    const value = JSON.stringify(request.body);
+    const hash = `req-${generateHash(value)}`;
+
+    logger.info(`Hash generated for write request: ${hash}`);
+
+    logger.info(`Writing hash and request to consul: ${hash}`);
+
+    await consul.kv.set(
+      hash,
+      JSON.stringify({
+        request: request.body,
+        status: 'pending'
+      })
+    );
+
+    logger.info(`Making a write request to: ${chain.head}`);
+
+    const delivery = await fetch(`http://${chain.head}/write`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...request.body,
+        hash
+      })
+    });
+
+    logger.info(
+      `Delivered to HEAD and got response: ${JSON.stringify(
+        await delivery.json()
+      )}`
+    );
+
+    // TODO: keep checking consul for the response
+    // TODO: have a timeout setting
   } catch (err) {
     logger.warn(err);
     response = {

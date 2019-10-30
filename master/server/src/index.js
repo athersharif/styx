@@ -1,6 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { adjustChain, performReadOperation } from './utils';
+import {
+  adjustChain,
+  performReadOperation,
+  performWriteOperation
+} from './utils';
 
 const app = express();
 const port = 80;
@@ -25,7 +29,9 @@ app.post('/read', async (req, res) => {
 app.post('/write', async (req, res) => {
   console.log('write operation');
 
-  return res.status(200);
+  const response = await performWriteOperation(req);
+
+  return res.status(response.status).send(response);
 });
 
 app.listen(port, () => {
