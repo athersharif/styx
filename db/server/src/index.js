@@ -74,7 +74,9 @@ app.post('/write', async (req, res) => {
       JSON.stringify({
         request,
         status: 'completed',
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        // TODO: result from the write operation
+        result: 'success'
       })
     );
   }

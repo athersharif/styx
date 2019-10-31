@@ -7,6 +7,8 @@ import fetch from 'node-fetch';
 //import { sleep } from 'sleep';
 import crypto from 'crypto';
 
+const TIMEOUT = 5000;
+
 log4js.configure({
   appenders: { console: { type: 'console' } },
   categories: { default: { appenders: ['console'], level: 'info' } }
@@ -267,8 +269,36 @@ export const performWriteOperation = async request => {
       )}`
     );
 
-    // TODO: keep checking consul for the response
-    // TODO: have a timeout setting
+    const startTime = Date.now();
+
+    const fetchResultsFromConsul = async () => {
+      logger.info('Fetching results from consul.');
+
+      if (Date.now() - startTime >= TIMEOUT) {
+        logger.warn('Timeout reached');
+      } else {
+        try {
+          const hashValue = (await consul.kv.get(hash))[0];
+          request = hashValue ? JSON.parse(hashValue.Value) : null;
+
+          if (request && request.status === 'completed' && request.result) {
+            logger.info(`Request response received for: ${hash}`);
+
+            response = {
+              message: request.result,
+              status: 200
+            };
+          } else {
+            await fetchResultsFromConsul();
+          }
+        } catch (err) {
+          logger.warn(err);
+          await fetchResultsFromConsul();
+        }
+      }
+    };
+
+    await fetchResultsFromConsul();
   } catch (err) {
     logger.warn(err);
     response = {
