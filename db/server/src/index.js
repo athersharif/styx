@@ -1,27 +1,58 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import log4js from 'log4js';
 import fetch from 'node-fetch';
-import consul from './consul';
 import { getNextInChain } from './utils';
-
-log4js.configure({
-  appenders: { console: { type: 'console' } },
-  categories: { default: { appenders: ['console'], level: 'info' } }
-});
+import consul from './shared/consul';
+import logger from './shared/logger';
 
 const app = express();
 const port = 80;
-const logger = log4js.getLogger();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/read', async (req, res) => {
-  logger.info('Read operation request received.');
+  logger.info(`Read operation request received: ${JSON.stringify(req.body)}`);
+
+  logger.info('Fetching request from consul.');
+
+  let request = null;
+
+  try {
+    const hashValue = (await consul.kv.get(req.body.hash))[0];
+    request = hashValue ? JSON.parse(hashValue.Value).request : null;
+  } catch (err) {
+    logger.error(err);
+  }
+
+  // TODO: check for other pending operations
+
+  logger.info(`Processing read operation: ${JSON.stringify(request)}`);
+
+  // TODO: perform the read operation
+
+  await consul.kv.set(
+    `req/nodes/${req.headers.host}/read/${req.body.hash}`,
+    'completed'
+  );
+
+  logger.info('Processed read operation.');
+
+  logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
+
+  await consul.kv.set(
+    `req/all/read/${req.body.hash}`,
+    JSON.stringify({
+      request,
+      status: 'completed',
+      timestamp: Date.now(),
+      // TODO: result from the write operation
+      result: 'success'
+    })
+  );
 
   return res.status(200).send({
-    message: 'read response received'
+    message: 'read response received and processed'
   });
 });
 
@@ -39,9 +70,16 @@ app.post('/write', async (req, res) => {
     logger.error(err);
   }
 
+  // TODO: check for other pending operations
+
   logger.info(`Processing write operation: ${JSON.stringify(request)}`);
 
   // TODO: perform the write operation
+
+  await consul.kv.set(
+    `req/nodes/${req.headers.host}/write/${req.body.hash}`,
+    'completed'
+  );
 
   logger.info('Processed write operation. Fetching chain.');
 
@@ -49,6 +87,10 @@ app.post('/write', async (req, res) => {
 
   if (node) {
     logger.info(`Found next node in chain: ${node}`);
+
+    logger.info('Writing to consul');
+
+    await consul.kv.set(`req/nodes/${node}/write/${req.body.hash}`, 'pending');
 
     const delivery = await fetch(`http://${node}/write`, {
       method: 'POST',
@@ -70,7 +112,7 @@ app.post('/write', async (req, res) => {
     logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
 
     await consul.kv.set(
-      req.body.hash,
+      `req/all/write/${req.body.hash}`,
       JSON.stringify({
         request,
         status: 'completed',

@@ -36,6 +36,6 @@ ssh:
 	@docker exec -it styx-$${target} /bin/sh
 
 clear-consul-request-keys:
-	@docker exec styx-consul-control /bin/sh -c 'consul kv delete -recurse req'
+	@docker exec styx-consul-control /bin/sh -c 'consul kv delete -recurse req/'
 
 .PHONY: docker-up docker-run ssh

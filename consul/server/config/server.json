@@ -12,5 +12,12 @@
     "styx-consul-agent-4",
     "styx-consul-agent-5"
   ],
+  "retry_join_wan": [
+    "styx-consul-agent-1",
+    "styx-consul-agent-2",
+    "styx-consul-agent-3",
+    "styx-consul-agent-4",
+    "styx-consul-agent-5"
+  ],
   "ui": true
 }

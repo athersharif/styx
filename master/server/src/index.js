@@ -1,10 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import {
-  adjustChain,
-  performReadOperation,
-  performWriteOperation
-} from './utils';
+import handleReadRequest from './read';
+import handleWriteRequest from './write';
+import { adjustChain } from './utils';
 
 const app = express();
 const port = 80;
@@ -21,7 +19,7 @@ app.post('/adjustchain', async (req, res) => {
 app.post('/read', async (req, res) => {
   console.log('read operation');
 
-  const response = await performReadOperation(req);
+  const response = await handleReadRequest(req);
 
   return res.status(response.status).send(response);
 });
@@ -29,7 +27,7 @@ app.post('/read', async (req, res) => {
 app.post('/write', async (req, res) => {
   console.log('write operation');
 
-  const response = await performWriteOperation(req);
+  const response = await handleWriteRequest(req);
 
   return res.status(response.status).send(response);
 });
