@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
+import sleep from 'sleep';
 import { getNextInChain } from './utils';
 import consul from './shared/consul';
 import logger from './shared/logger';

@@ -4,7 +4,7 @@ import { getCurrentChain } from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
-export default async request => {
+export default async (request, time) => {
   let chain = await getCurrentChain();
   let response = {
     error: 'Unknown error occurred',
@@ -17,7 +17,7 @@ export default async request => {
 
   try {
     const value = JSON.stringify(request.body);
-    const hash = `${generateHash(value)}`;
+    const hash = `${generateHash(value, time)}`;
 
     logger.info(`Hash generated for write request: ${hash}`);
 
@@ -46,6 +46,8 @@ export default async request => {
         hash
       })
     });
+
+    response.status = delivery.status;
 
     delivery = await delivery.json();
 

@@ -4,13 +4,11 @@ import createChain from './create';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
-export const TIMEOUT = 5000;
-
-export const generateHash = value =>
+export const generateHash = (value, time = Date.now()) =>
   `${crypto
     .createHash('md5')
     .update(value)
-    .digest('hex')}.${Date.now()}`;
+    .digest('hex')}.${time}`;
 
 export const adjustChain = async (fromWatcher = true) => {
   const nodes = await getDBNodes();

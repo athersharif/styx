@@ -1,6 +1,6 @@
 FROM postgres:latest
 
-RUN apt-get update && apt-get install nodejs npm -y
+RUN apt-get update && apt-get install nodejs npm g++ make python -y
 
 RUN mkdir /opt/server
 WORKDIR /opt/server

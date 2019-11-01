@@ -4,7 +4,7 @@ import { getCurrentChain } from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
-export default async request => {
+export default async (request, time) => {
   let chain = await getCurrentChain();
   let response = {
     error: 'Unknown error occurred',
@@ -17,7 +17,7 @@ export default async request => {
 
   try {
     const value = JSON.stringify(request.body);
-    const hash = `${generateHash(value)}`;
+    const hash = `${generateHash(value, time)}`;
 
     logger.info(`Hash generated for write request: ${hash}`);
 
@@ -53,36 +53,21 @@ export default async request => {
       )}`
     );
 
-    const startTime = Date.now();
+    logger.info('Fetching results from consul.');
 
-    const fetchResultsFromConsul = async () => {
-      logger.info('Fetching results from consul.');
+    const hashValue = (await consul.kv.get(`req/all/write/${hash}`))[0];
+    request = hashValue ? JSON.parse(hashValue.Value) : null;
 
-      if (Date.now() - startTime >= TIMEOUT) {
-        logger.warn('Timeout reached');
-      } else {
-        try {
-          const hashValue = (await consul.kv.get(`req/all/write/${hash}`))[0];
-          request = hashValue ? JSON.parse(hashValue.Value) : null;
+    if (request && request.status === 'completed' && request.result) {
+      logger.info(`Request response received for: ${hash}`);
 
-          if (request && request.status === 'completed' && request.result) {
-            logger.info(`Request response received for: ${hash}`);
-
-            response = {
-              message: request.result,
-              status: 200
-            };
-          } else {
-            await fetchResultsFromConsul();
-          }
-        } catch (err) {
-          logger.warn(err);
-          await fetchResultsFromConsul();
-        }
-      }
-    };
-
-    await fetchResultsFromConsul();
+      response = {
+        message: request.result,
+        status: 200
+      };
+    } else {
+      throw new Error('Operation in progress.');
+    }
   } catch (err) {
     logger.warn(err);
     response = {
