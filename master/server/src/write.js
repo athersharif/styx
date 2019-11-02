@@ -1,25 +1,44 @@
-import fetch from 'node-fetch';
-import { generateHash, TIMEOUT } from './utils';
-import { getCurrentChain } from './shared/commonUtils';
+import { generateHash } from './utils';
+import {
+  deliverJSONRequest,
+  getCurrentChain,
+  getValueFromConsul
+} from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
+import timedFunction from './shared/timer';
 
-export default async (request, time) => {
+export default async request => {
   let chain = await getCurrentChain();
-  let response = {
-    error: 'Unknown error occurred',
-    status: 500
-  };
+  let response = null;
 
   if (!chain) {
     chain = await adjustChain();
   }
 
-  try {
-    const value = JSON.stringify(request.body);
-    const hash = `${generateHash(value, time)}`;
+  const value = JSON.stringify(request.body);
+  const hash = `${generateHash(value)}`;
 
-    logger.info(`Hash generated for write request: ${hash}`);
+  logger.info(`Hash generated for write request: ${hash}`);
+
+  response = await timedFunction(writeToConsul, { hash, request });
+
+  if (response.status !== 200) {
+    return response;
+  }
+
+  response = await timedFunction(deliverToHead, { hash, request });
+
+  if (response.status !== 200) {
+    return response;
+  }
+
+  return await timedFunction(fetchResults, { hash, request });
+};
+
+const writeToConsul = async ({ hash, request }) => {
+  try {
+    const chain = await getCurrentChain();
 
     logger.info(`Writing hash and write request to consul: ${hash}`);
 
@@ -32,31 +51,50 @@ export default async (request, time) => {
         status: 'pending'
       })
     );
+  } catch (err) {
+    logger.warn(err);
+    return {
+      error: 'Unknown error occurred',
+      status: 500
+    };
+  }
+
+  return { status: 200 };
+};
+
+const deliverToHead = async ({ hash, request }) => {
+  try {
+    const chain = await getCurrentChain();
 
     logger.info(`Making a write request to: ${chain.head}`);
 
-    const delivery = await fetch(`http://${chain.head}/write`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
+    return await deliverJSONRequest(
+      `http://${chain.head}/write`,
+      {
         ...request.body,
         hash
-      })
-    });
-
-    logger.info(
-      `Delivered to HEAD and got response: ${JSON.stringify(
-        await delivery.json()
-      )}`
+      },
+      'HEAD'
     );
+  } catch (err) {
+    logger.warn(err);
+    return {
+      error: 'Error delivering the response. Please try again.',
+      status: 500
+    };
+  }
+};
 
+const fetchResults = async ({ hash, request }) => {
+  let response = {
+    error: 'Unknown error occurred',
+    status: 500
+  };
+
+  try {
     logger.info('Fetching results from consul.');
 
-    const hashValue = (await consul.kv.get(`req/all/write/${hash}`))[0];
-    request = hashValue ? JSON.parse(hashValue.Value) : null;
+    request = await getValueFromConsul(`req/all/write/${hash}`);
 
     if (request && request.status === 'completed' && request.result) {
       logger.info(`Request response received for: ${hash}`);

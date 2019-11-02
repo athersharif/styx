@@ -1,10 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import fetch from 'node-fetch';
 import sleep from 'sleep';
-import { getNextInChain } from './utils';
+import { forwardToNextNodeOrDeliver } from './utils';
+import { getValueFromConsul, splitString } from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
+import timedFunction from './shared/timer';
 
 const app = express();
 const port = 80;
@@ -20,8 +21,7 @@ app.post('/read', async (req, res) => {
   let request = null;
 
   try {
-    const hashValue = (await consul.kv.get(req.body.hash))[0];
-    request = hashValue ? JSON.parse(hashValue.Value).request : null;
+    request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
   } catch (err) {
     logger.error(err);
   }
@@ -65,13 +65,37 @@ app.post('/write', async (req, res) => {
   let request = null;
 
   try {
-    const hashValue = (await consul.kv.get(req.body.hash))[0];
-    request = hashValue ? JSON.parse(hashValue.Value).request : null;
+    request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
   } catch (err) {
     logger.error(err);
   }
 
   // TODO: check for other pending operations
+
+  logger.info('Checking for past pending operations');
+
+  const pendingOperations = (
+    (await consul.kv.get({
+      key: `req/nodes/${req.headers.host}/write/`,
+      recurse: true
+    }))[0] || []
+  )
+    .filter(o => o.Value === 'pending' && !o.Key.includes(req.body.hash))
+    .map(o => splitString(o.Key))
+    .sort();
+
+  logger.info(`Found ${pendingOperations.length} pending operations`);
+
+  pendingOperations.forEach(async o => {
+    logger.info(`Processing past write operation: ${o}`);
+
+    // TODO: perform the write operations
+
+    await consul.kv.set(
+      `req/nodes/${req.headers.host}/write/${o}`,
+      'completed'
+    );
+  });
 
   logger.info(`Processing write operation: ${JSON.stringify(request)}`);
 
@@ -84,45 +108,7 @@ app.post('/write', async (req, res) => {
 
   logger.info('Processed write operation. Fetching chain.');
 
-  const node = await getNextInChain(req.headers.host);
-
-  if (node) {
-    logger.info(`Found next node in chain: ${node}`);
-
-    logger.info('Writing to consul');
-
-    await consul.kv.set(`req/nodes/${node}/write/${req.body.hash}`, 'pending');
-
-    const delivery = await fetch(`http://${node}/write`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(req.body)
-    });
-
-    logger.info(
-      `Delivered to ${node} and got response: ${JSON.stringify(
-        await delivery.json()
-      )}`
-    );
-  } else {
-    logger.info('No next node, this is the tail');
-
-    logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
-
-    await consul.kv.set(
-      `req/all/write/${req.body.hash}`,
-      JSON.stringify({
-        request,
-        status: 'completed',
-        timestamp: Date.now(),
-        // TODO: result from the write operation
-        result: 'success'
-      })
-    );
-  }
+  await timedFunction(forwardToNextNodeOrDeliver, { req, request });
 
   return res.status(200).send({
     message: 'write response received and processed'

@@ -52,10 +52,7 @@ services:
   styx-consul-agent-1: &styx-agent
     <<: *styx-consul
     container_name: styx-consul-agent-1
-    ports: 
-      - "6001:8500"
     volumes:
-      - "./consul/agent/config/agent.json:/consul/config/agent.json"
       - "./consul/agent/config/db-1.json:/consul/config/db.json"
     depends_on:
       - styx-db-1
@@ -64,8 +61,6 @@ services:
   styx-consul-agent-2:
     <<: *styx-agent
     container_name: styx-consul-agent-2
-    ports: 
-      - "6002:8500"    
     volumes:
       - "./consul/agent/config/db-2.json:/consul/config/db.json"    
     depends_on:
@@ -74,8 +69,6 @@ services:
   styx-consul-agent-3:
     <<: *styx-agent
     container_name: styx-consul-agent-3
-    ports: 
-      - "6003:8500"    
     volumes:
       - "./consul/agent/config/db-3.json:/consul/config/db.json"    
     depends_on:
@@ -84,8 +77,6 @@ services:
   styx-consul-agent-4:
     <<: *styx-agent
     container_name: styx-consul-agent-4
-    ports: 
-      - "6004:8500"
     volumes:
       - "./consul/agent/config/db-4.json:/consul/config/db.json"    
     depends_on:
@@ -94,8 +85,6 @@ services:
   styx-consul-agent-5:
     <<: *styx-agent
     container_name: styx-consul-agent-5
-    ports: 
-      - "6005:8500"    
     volumes:
       - "./consul/agent/config/db-5.json:/consul/config/db.json"
     depends_on:

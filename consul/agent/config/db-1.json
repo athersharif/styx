@@ -14,6 +14,7 @@
     },
     {
       "name": "db-server",
+      "id": "styx-db-1",
       "address": "styx-db-1",
       "port": 80,
       "checks": [

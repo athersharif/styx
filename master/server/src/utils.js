@@ -23,7 +23,7 @@ export const getDBNodes = async () => {
   let nodes = [];
 
   try {
-    nodes = (await consul.health.checks('db-service'))[0]
+    nodes = (await consul.health.checks('db-server'))[0]
       .map(n => ({
         ...n,
         address: n.ServiceID

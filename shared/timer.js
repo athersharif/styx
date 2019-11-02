@@ -1,6 +1,8 @@
+import isNil from 'lodash/isNil';
 import logger from './logger';
 
-const TIMEOUT = 30000;
+const TIMEOUT = 10000;
+const INTERVAL = 3000;
 
 export default async (fn, args, timeout = TIMEOUT) => {
   let response = {
@@ -16,7 +18,7 @@ export default async (fn, args, timeout = TIMEOUT) => {
       try {
         response = await fn(args, startTime);
 
-        if (response.status !== 200) {
+        if (isNil(response) || response.status !== 200) {
           await timedFunction();
         }
       } catch (err) {

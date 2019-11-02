@@ -1,7 +1,8 @@
 import max from 'lodash/max';
 import range from 'lodash/range';
 import uniq from 'lodash/uniq';
-import { getCurrentChain } from './shared/commonUtils';
+import { getCurrentChain, splitString } from './shared/commonUtils';
+import consul from './shared/consul';
 import logger from './shared/logger';
 
 export default async (nodes, fromWatcher) => {
@@ -105,15 +106,45 @@ export default async (nodes, fromWatcher) => {
         chain.head = recoveredNode.address;
       }
 
-      chain.tail = recoveredNode.address;
+      logger.info(`Fetching the current state from: ${chain.tail}`);
 
-      // TODO: fetch state from the TAIL
-      // TODO: apply state to the current node
+      const tailOperations = (
+        (await consul.kv.get({
+          key: `req/nodes/${chain.tail}/write/`,
+          recurse: true
+        }))[0] || []
+      ).map(o => splitString(o.Key));
+
+      logger.info(`Fetching the current state from: ${recoveredNode.address}`);
+
+      const recoveredNodeOperations = (
+        (await consul.kv.get({
+          key: `req/nodes/${recoveredNode.address}/write`,
+          recurse: true
+        }))[0] || []
+      ).map(o => splitString(o.Key));
+
+      const pendingOperations = tailOperations.filter(
+        o => !recoveredNodeOperations.some(r => r === o)
+      );
+
+      logger.info(
+        `Adding ${pendingOperations.length} pending keys from: ${chain.tail} to: ${recoveredNode.address}`
+      );
+
+      pendingOperations.forEach(async o => {
+        await consul.kv.set(
+          `req/nodes/${recoveredNode.address}/write/${o}`,
+          'pending'
+        );
+      });
 
       // what do we do to ensure that while the state is being restored
       // another request doesn't come in
       // maybe a fifo system on the consul agent?
       // and each db node only processes something once there's nothing left in the queue?
+
+      chain.tail = recoveredNode.address;
 
       logger.info(`Node recovered: ${recoveredNode.address}`);
       logger.info(`Node added to the TAIL: ${recoveredNode.address}`);

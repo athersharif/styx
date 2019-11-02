@@ -5,11 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint db/server/src master/server/src shared/",
     "prettier": "prettier --single-quote --write '{,!(node_modules|docs|build)/**/}*.{js,css,json}'"
   },
   "author": "Ather Sharif <ather.sharif@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.6.0",
     "prettier": "^1.18.2"
   }
 }
