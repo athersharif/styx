@@ -6,8 +6,7 @@ export const getCurrentChain = async () => {
   let chain = null;
 
   try {
-    chain = (await consul.kv.get('chain'))[0];
-    chain = chain ? JSON.parse(chain.Value) : null;
+    chain = await getValueFromConsul('chain');
   } catch (err) {
     logger.error(err);
   }
@@ -21,10 +20,14 @@ export const splitString = (value, character = '/', positionFromEnd = 0) => {
   return splitValue[splitValue.length - 1 - positionFromEnd];
 };
 
-export const getValueFromConsul = async key => {
-  const value = (await consul.kv.get(key))[0];
+export const getValueFromConsul = async (key, options = {}, raw = false) => {
+  const value = (await consul.kv.get({ key, ...options }))[0];
 
-  return value ? JSON.parse(value.Value) : null;
+  if (value) {
+    return raw ? value : JSON.parse(value.Value);
+  } else {
+    return null;
+  }
 };
 
 export const deliverJSONRequest = async (url, body, to) => {

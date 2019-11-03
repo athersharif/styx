@@ -1,7 +1,11 @@
 import max from 'lodash/max';
 import range from 'lodash/range';
 import uniq from 'lodash/uniq';
-import { getCurrentChain, splitString } from './shared/commonUtils';
+import {
+  getCurrentChain,
+  getValueFromConsul,
+  splitString
+} from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
@@ -118,19 +122,21 @@ export default async (nodes, fromWatcher) => {
       logger.info(`Fetching the current state from: ${chain.tail}`);
 
       const tailOperations = (
-        (await consul.kv.get({
-          key: `req/nodes/${chain.tail}/write/`,
-          recurse: true
-        }))[0] || []
+        (await getValueFromConsul(
+          `req/nodes/${chain.tail}/write/`,
+          { recurse: true },
+          true
+        )) || []
       ).map(o => splitString(o.Key));
 
       logger.info(`Fetching the current state from: ${recoveredNode.address}`);
 
       const recoveredNodeOperations = (
-        (await consul.kv.get({
-          key: `req/nodes/${recoveredNode.address}/write`,
-          recurse: true
-        }))[0] || []
+        (await getValueFromConsul(
+          `req/nodes/${recoveredNode.address}/write`,
+          { recurse: true },
+          true
+        )) || []
       ).map(o => splitString(o.Key));
 
       const pendingOperations = tailOperations.filter(

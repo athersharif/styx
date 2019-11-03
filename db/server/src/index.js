@@ -1,6 +1,5 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import sleep from 'sleep';
 import { forwardToNextNodeOrDeliver } from './utils';
 import { getValueFromConsul, splitString } from './shared/commonUtils';
 import consul from './shared/consul';
@@ -25,8 +24,6 @@ app.post('/read', async (req, res) => {
   } catch (err) {
     logger.error(err);
   }
-
-  // TODO: check for other pending operations
 
   logger.info(`Processing read operation: ${JSON.stringify(request)}`);
 
@@ -70,15 +67,14 @@ app.post('/write', async (req, res) => {
     logger.error(err);
   }
 
-  // TODO: check for other pending operations
-
   logger.info('Checking for past pending operations');
 
   const pendingOperations = (
-    (await consul.kv.get({
-      key: `req/nodes/${req.headers.host}/write/`,
-      recurse: true
-    }))[0] || []
+    (await getValueFromConsul(
+      `req/nodes/${req.headers.host}/write/`,
+      { recurse: true },
+      true
+    )) || []
   )
     .filter(o => o.Value === 'pending' && !o.Key.includes(req.body.hash))
     .map(o => splitString(o.Key))
