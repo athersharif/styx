@@ -28,6 +28,8 @@ export const getValueFromConsul = async key => {
 };
 
 export const deliverJSONRequest = async (url, body, to) => {
+  let response = { status: 500 };
+
   const delivery = await fetch(url, {
     method: 'POST',
     headers: {
@@ -38,15 +40,20 @@ export const deliverJSONRequest = async (url, body, to) => {
   });
 
   if (delivery.status === 200) {
+    response.status = delivery.status;
+
+    response = {
+      ...(await delivery.json()),
+      status: response.status
+    };
+
     logger.info(
-      `Delivered to ${to} and got response: ${JSON.stringify(
-        await delivery.json()
-      )}`
+      `Delivered to ${to} and got response: ${JSON.stringify(response)}`
     );
   } else {
     logger.warn(`Delivery to ${url} failed`);
     throw new Error(`Could not make a call to ${url}. Please check the url.`);
   }
 
-  return delivery;
+  return response;
 };

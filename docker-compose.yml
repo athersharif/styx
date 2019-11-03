@@ -23,7 +23,6 @@ services:
       - "./consul/control/config:/consul/config"
     ports: 
       - "8500:8500"
-      - "8600:8600"
     depends_on:
       - styx-consul-server-1
       - styx-consul-server-2
@@ -97,33 +96,23 @@ services:
       - "./db/server:/opt/server/"
       - "./shared:/opt/server/src/shared"      
       - "/opt/server/node_modules"                
-    ports: 
-      - "4001:80"    
     expose: 
       - "5432"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=development    
 
   styx-db-2: 
     <<: *styx-db
     container_name: styx-db-2
-    ports: 
-      - "4002:80"    
 
   styx-db-3: 
     <<: *styx-db
     container_name: styx-db-3
-    ports: 
-      - "4003:80"        
 
   styx-db-4: 
     <<: *styx-db
     container_name: styx-db-4
-    ports: 
-      - "4004:80"        
 
   styx-db-5: 
     <<: *styx-db
     container_name: styx-db-5    
-    ports: 
-      - "4005:80"        

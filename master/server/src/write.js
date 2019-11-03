@@ -1,4 +1,4 @@
-import { generateHash } from './utils';
+import { checkUpdatingChainFlag, generateHash } from './utils';
 import {
   deliverJSONRequest,
   getCurrentChain,
@@ -20,6 +20,12 @@ export default async request => {
   const hash = `${generateHash(value)}`;
 
   logger.info(`Hash generated for write request: ${hash}`);
+
+  response = await timedFunction(checkUpdatingChainFlag);
+
+  if (response.status !== 200) {
+    return response;
+  }
 
   response = await timedFunction(writeToConsul, { hash, request });
 

@@ -1,6 +1,6 @@
-//import { sleep } from 'sleep';
 import crypto from 'crypto';
 import createChain from './create';
+import { getValueFromConsul } from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
@@ -15,6 +15,14 @@ export const adjustChain = async (fromWatcher = true) => {
   const chain = await createChain(nodes, fromWatcher);
 
   await consul.kv.set('chain', JSON.stringify(chain));
+
+  const updatingChainFlag = await getValueFromConsul('updatingChain');
+
+  if (updatingChainFlag) {
+    await consul.kv.set('updatingChain', 'false');
+
+    logger.info('Queuing incoming requests turned off.');
+  }
 
   return chain;
 };
@@ -34,4 +42,18 @@ export const getDBNodes = async () => {
   }
 
   return nodes;
+};
+
+export const checkUpdatingChainFlag = async () => {
+  const flag = await getValueFromConsul('updatingChain');
+
+  return flag
+    ? {
+        status: 503,
+        message: 'Operation in progress'
+      }
+    : {
+        status: 200,
+        message: 'No chain update in progress'
+      };
 };

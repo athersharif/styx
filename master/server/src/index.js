@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import handleReadRequest from './read';
 import handleWriteRequest from './write';
 import { adjustChain } from './utils';
-import timedFunction from './shared/timer';
 
 const app = express();
 const port = 80;
@@ -18,7 +17,7 @@ app.post('/adjustchain', async (req, res) => {
 });
 
 app.post('/read', async (req, res) => {
-  const response = await timedFunction(handleReadRequest, req);
+  const response = await handleReadRequest(req);
 
   return res.status(response.status).send(response);
 });

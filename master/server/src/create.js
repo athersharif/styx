@@ -55,6 +55,15 @@ export default async (nodes, fromWatcher) => {
     );
     const hasNodeDied = nodes.length < currentChainValues.length;
     const hasNodeRecovered = nodes.length > currentChainValues.length;
+    const changeHappened = hasNodeDied || hasNodeRecovered;
+
+    if (changeHappened) {
+      logger.info('Queuing incoming requests');
+
+      await consul.kv.set('updatingChain', 'true');
+
+      logger.info('Queued incoming requests. Updating chain.');
+    }
 
     if (hasNodeDied) {
       let changedNodeKey = currentChainKeys.find(
@@ -139,18 +148,13 @@ export default async (nodes, fromWatcher) => {
         );
       });
 
-      // what do we do to ensure that while the state is being restored
-      // another request doesn't come in
-      // maybe a fifo system on the consul agent?
-      // and each db node only processes something once there's nothing left in the queue?
-
       chain.tail = recoveredNode.address;
 
       logger.info(`Node recovered: ${recoveredNode.address}`);
       logger.info(`Node added to the TAIL: ${recoveredNode.address}`);
     }
 
-    if (hasNodeDied || hasNodeRecovered) {
+    if (changeHappened) {
       logger.info(`Updated chain: ${JSON.stringify(chain)}`);
 
       return chain;
