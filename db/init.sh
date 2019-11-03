@@ -16,4 +16,4 @@ psql -v ON_ERROR_STOP=1 -U postgres -d postgres <<-EOSQL
     CREATE DATABASE "styx_db" WITH OWNER=styx_admin TEMPLATE template0;
 EOSQL
 
-psql -U styx_admin -d styx_db -a -f /opt/db/schema.sql
+psql -U styx_admin -d styx_db -a -f /opt/server/schema.sql

@@ -20,6 +20,9 @@ export default async (fn, args, timeout = TIMEOUT) => {
 
         if (isNil(response) || response.status !== 200) {
           await timedFunction();
+        } else if (response.responseStatus) {
+          response.status = response.responseStatus;
+          delete response.responseStatus;
         }
       } catch (err) {
         logger.warn(err);

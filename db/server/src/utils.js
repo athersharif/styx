@@ -1,5 +1,12 @@
+import { Pool } from 'pg';
 import max from 'lodash/max';
-import { deliverJSONRequest, getCurrentChain } from './shared/commonUtils';
+import orderBy from 'lodash/orderBy';
+import {
+  deliverJSONRequest,
+  getCurrentChain,
+  getValueFromConsul,
+  splitString
+} from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 
@@ -28,7 +35,7 @@ const getNextInChain = async host => {
   return nextPosition;
 };
 
-export const forwardToNextNodeOrDeliver = async ({ req, request }) => {
+export const forwardToNextNodeOrDeliver = async ({ req, request, result }) => {
   try {
     const node = await getNextInChain(req.headers.host);
 
@@ -54,8 +61,7 @@ export const forwardToNextNodeOrDeliver = async ({ req, request }) => {
           request,
           status: 'completed',
           timestamp: Date.now(),
-          // TODO: result from the write operation
-          result: 'success'
+          result: result.response
         })
       );
 
@@ -65,4 +71,76 @@ export const forwardToNextNodeOrDeliver = async ({ req, request }) => {
     logger.warn(err);
     return { status: 408 };
   }
+};
+
+export const makePgCall = async query => {
+  let result = {
+    response: 'unknown error happened',
+    status: 503
+  };
+
+  try {
+    logger.info('initializing pg pool');
+
+    const pgPool = new Pool();
+
+    logger.info(`calling query: ${query}`);
+
+    result = {
+      response: await pgPool.query(query),
+      status: 200
+    };
+
+    await pgPool.end();
+  } catch (err) {
+    logger.warn(err);
+    result = {
+      response: err.message,
+      status: 400
+    };
+  }
+
+  return result;
+};
+
+export const performPendingOperations = async req => {
+  logger.info('Checking for past pending operations');
+
+  const pendingOperations = orderBy(
+    (
+      (await getValueFromConsul(
+        `req/nodes/${req.headers.host}/write/`,
+        { recurse: true },
+        true
+      )) || []
+    )
+      .filter(o => o.Value === 'pending' && !o.Key.includes(req.body.hash))
+      .map(o => {
+        const hash = splitString(o.Key);
+
+        return { hash, timestamp: parseFloat(splitString(hash, '.')) };
+      }),
+    ['timestamp']
+  );
+
+  console.log(pendingOperations);
+
+  logger.info(`Found ${pendingOperations.length} pending operations`);
+
+  await pendingOperations.reduce(async (previousPromise, { hash }) => {
+    await previousPromise;
+
+    const request = (await getValueFromConsul(`req/all/write/${hash}`)).request;
+
+    logger.info(
+      `Processing past write operation: ${hash}: ${JSON.stringify(request)}`
+    );
+
+    await makePgCall(request.request.query);
+
+    await consul.kv.set(
+      `req/nodes/${req.headers.host}/write/${hash}`,
+      'completed'
+    );
+  }, Promise.resolve());
 };

@@ -1,5 +1,36 @@
 version: '3.5'
 
+x-styx-db: &styx-db
+  image: styx/db
+  build: ./db
+  volumes:
+    - "./db/init.sh:/docker-entrypoint-initdb.d/init.sh"
+    - "./db/schema.sql:/opt/server/schema.sql"
+    - "./db/server:/opt/server/"
+    - "./shared:/opt/server/src/shared"      
+    - "/opt/server/node_modules"    
+  expose: 
+    - "5432"
+  environment:
+    - NODE_ENV=development    
+    - PGUSER=styx_admin
+    - PGDATABASE=styx_db
+
+x-styx-consul: &styx-consul 
+  image: styx/consul
+  build: ./consul
+  command: agent
+
+x-styx-consul-server: &styx-consul-server 
+  <<: *styx-consul
+  image: styx/consul-server
+  volumes:
+    - "./consul/server/config:/consul/config"
+  depends_on:
+    - styx-consul-agent-1
+    - styx-consul-agent-2
+    - styx-consul-agent-3                  
+  
 services:
 
   styx-master:
@@ -29,36 +60,28 @@ services:
       - styx-consul-server-3
     command: agent
 
-  styx-consul-server-1: &styx-consul
+  styx-consul-server-1: 
+    <<: *styx-consul-server    
     container_name: styx-consul-server-1
-    build: ./consul
-    volumes:
-      - "./consul/server/config:/consul/config"
-    depends_on:
-      - styx-consul-agent-1
-      - styx-consul-agent-2
-      - styx-consul-agent-3                  
-    command: agent
     
   styx-consul-server-2:
-    <<: *styx-consul
+    <<: *styx-consul-server
     container_name: styx-consul-server-2
 
   styx-consul-server-3:
-    <<: *styx-consul
+    <<: *styx-consul-server
     container_name: styx-consul-server-3
 
-  styx-consul-agent-1: &styx-agent
+  styx-consul-agent-1: 
     <<: *styx-consul
     container_name: styx-consul-agent-1
     volumes:
       - "./consul/agent/config/db-1.json:/consul/config/db.json"
     depends_on:
       - styx-db-1
-    command: agent
 
   styx-consul-agent-2:
-    <<: *styx-agent
+    <<: *styx-consul
     container_name: styx-consul-agent-2
     volumes:
       - "./consul/agent/config/db-2.json:/consul/config/db.json"    
@@ -66,7 +89,7 @@ services:
       - styx-db-2      
 
   styx-consul-agent-3:
-    <<: *styx-agent
+    <<: *styx-consul
     container_name: styx-consul-agent-3
     volumes:
       - "./consul/agent/config/db-3.json:/consul/config/db.json"    
@@ -74,7 +97,7 @@ services:
       - styx-db-3
 
   styx-consul-agent-4:
-    <<: *styx-agent
+    <<: *styx-consul
     container_name: styx-consul-agent-4
     volumes:
       - "./consul/agent/config/db-4.json:/consul/config/db.json"    
@@ -82,28 +105,18 @@ services:
       - styx-db-4
 
   styx-consul-agent-5:
-    <<: *styx-agent
+    <<: *styx-consul
     container_name: styx-consul-agent-5
     volumes:
       - "./consul/agent/config/db-5.json:/consul/config/db.json"
     depends_on:
       - styx-db-5
 
-  styx-db-1: &styx-db 
+  styx-db-1:
+    <<: *styx-db
     container_name: styx-db-1
-    build: ./db
-    volumes:
-      - "./db/init.sh:/docker-entrypoint-initdb.d/init.sh"
-      - "./db/schema.sql:/opt/db/schema.sql"            
-      - "./db/server:/opt/server/"
-      - "./shared:/opt/server/src/shared"      
-      - "/opt/server/node_modules"    
     ports:
       - "5441:5432"              
-    expose: 
-      - "5432"
-    environment:
-      - NODE_ENV=development    
 
   styx-db-2: 
     <<: *styx-db

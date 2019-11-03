@@ -20,6 +20,7 @@
     "lodash": "^4.17.15",
     "log4js": "^5.3.0",
     "node-fetch": "^2.6.0",
+    "pg": "^7.12.1",
     "sleep": "^6.1.0"
   },
   "devDependencies": {

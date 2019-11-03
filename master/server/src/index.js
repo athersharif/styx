@@ -39,5 +39,5 @@ const recheckChain = () => {
   setTimeout(async () => {
     await adjustChain(false);
     recheckChain();
-  }, 5000);
+  }, 2000);
 };

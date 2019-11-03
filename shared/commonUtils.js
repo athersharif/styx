@@ -43,10 +43,12 @@ export const deliverJSONRequest = async (url, body, to) => {
   });
 
   if (delivery.status === 200) {
+    const deliveryJson = await delivery.json();
     response.status = delivery.status;
 
     response = {
-      ...(await delivery.json()),
+      ...deliveryJson,
+      responseStatus: deliveryJson.status,
       status: response.status
     };
 

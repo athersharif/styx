@@ -9,4 +9,4 @@ ENV PATH /opt/server/node_modules/.bin:$PATH
 
 COPY server/package.json server/package-lock.json ./
 
-RUN npm install
+RUN npm install --silent

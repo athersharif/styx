@@ -1,7 +1,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import { forwardToNextNodeOrDeliver } from './utils';
-import { getValueFromConsul, splitString } from './shared/commonUtils';
+import {
+  forwardToNextNodeOrDeliver,
+  makePgCall,
+  performPendingOperations
+} from './utils';
+import { getValueFromConsul } from './shared/commonUtils';
 import consul from './shared/consul';
 import logger from './shared/logger';
 import timedFunction from './shared/timer';
@@ -20,14 +24,16 @@ app.post('/read', async (req, res) => {
   let request = null;
 
   try {
-    request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
+    request = await getValueFromConsul(`req/all/read/${req.body.hash}`);
   } catch (err) {
     logger.error(err);
   }
 
+  await performPendingOperations(req);
+
   logger.info(`Processing read operation: ${JSON.stringify(request)}`);
 
-  // TODO: perform the read operation
+  const result = await makePgCall(request.request.query);
 
   await consul.kv.set(
     `req/nodes/${req.headers.host}/read/${req.body.hash}`,
@@ -44,14 +50,11 @@ app.post('/read', async (req, res) => {
       request,
       status: 'completed',
       timestamp: Date.now(),
-      // TODO: result from the write operation
-      result: 'success'
+      result: result.response
     })
   );
 
-  return res.status(200).send({
-    message: 'read response received and processed'
-  });
+  return res.status(200).send(result);
 });
 
 app.post('/write', async (req, res) => {
@@ -67,35 +70,11 @@ app.post('/write', async (req, res) => {
     logger.error(err);
   }
 
-  logger.info('Checking for past pending operations');
-
-  const pendingOperations = (
-    (await getValueFromConsul(
-      `req/nodes/${req.headers.host}/write/`,
-      { recurse: true },
-      true
-    )) || []
-  )
-    .filter(o => o.Value === 'pending' && !o.Key.includes(req.body.hash))
-    .map(o => splitString(o.Key))
-    .sort();
-
-  logger.info(`Found ${pendingOperations.length} pending operations`);
-
-  pendingOperations.forEach(async o => {
-    logger.info(`Processing past write operation: ${o}`);
-
-    // TODO: perform the write operations
-
-    await consul.kv.set(
-      `req/nodes/${req.headers.host}/write/${o}`,
-      'completed'
-    );
-  });
+  await performPendingOperations(req);
 
   logger.info(`Processing write operation: ${JSON.stringify(request)}`);
 
-  // TODO: perform the write operation
+  const result = await makePgCall(request.request.query);
 
   await consul.kv.set(
     `req/nodes/${req.headers.host}/write/${req.body.hash}`,
@@ -104,11 +83,9 @@ app.post('/write', async (req, res) => {
 
   logger.info('Processed write operation. Fetching chain.');
 
-  await timedFunction(forwardToNextNodeOrDeliver, { req, request });
+  await timedFunction(forwardToNextNodeOrDeliver, { req, request, result });
 
-  return res.status(200).send({
-    message: 'write response received and processed'
-  });
+  return res.status(200).send(result);
 });
 
 app.listen(port, async () => {
