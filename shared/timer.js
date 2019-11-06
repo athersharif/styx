@@ -35,3 +35,6 @@ export default async (fn, args, timeout = TIMEOUT) => {
 
   return response;
 };
+
+export const sleep = (ms = INTERVAL) =>
+  new Promise(resolve => setTimeout(resolve, ms));

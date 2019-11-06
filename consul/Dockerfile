@@ -1,3 +1,0 @@
-FROM consul:latest
-
-EXPOSE 8300 8301 8302 8400 8500 8600

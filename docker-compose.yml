@@ -17,8 +17,7 @@ x-styx-db: &styx-db
     - PGDATABASE=styx_db
 
 x-styx-consul: &styx-consul 
-  image: styx/consul
-  build: ./consul
+  image: "consul:latest"
   command: agent
 
 x-styx-consul-server: &styx-consul-server 

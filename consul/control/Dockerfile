@@ -1,6 +1,6 @@
 FROM consul:latest
 
-RUN apk update && apk add nodejs npm g++ make python -y
+RUN apk update && apk add nodejs npm
 
 RUN mkdir /opt/server
 WORKDIR /opt/server
