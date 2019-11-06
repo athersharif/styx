@@ -1,7 +1,7 @@
 docker-up:
 	@docker-compose build --parallel
 	@docker-compose up -d
-	@sh start_db_servers.sh
+	@sh start_nodejs_servers.sh
 
 docker-run:
 	@docker-compose -f docker-compose.yml run --rm --service-ports --name sidewalkevolution-$${target}-dev $${target}-dev /bin/sh
@@ -25,9 +25,8 @@ docker-remove-all-consul-agent:
 	@docker rm styx-consul-agent-4 -f
 	@docker rm styx-consul-agent-5 -f
 
-docker-reset-all:
+docker-remove-all:
 	@docker rm styx-master -f
-	@docker rm styx-consul-control -f
 	@make docker-remove-all-consul-server
 	@make docker-remove-all-consul-agent
 	@make docker-remove-all-db

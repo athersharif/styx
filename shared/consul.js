@@ -2,7 +2,7 @@ import Bluebird from 'bluebird';
 import consul from 'consul';
 
 const DEFAULT_CONFIG = {
-  host: 'styx-consul-control',
+  host: 'styx-master',
   promisify: fn => Bluebird.fromCallback(fn, { multiArgs: true })
 };
 

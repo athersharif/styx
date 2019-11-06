@@ -11,12 +11,19 @@ export const generateHash = (value, time = Date.now()) =>
     .digest('hex')}.${time}`;
 
 export const adjustChain = async (fromWatcher = true) => {
-  const nodes = await getDBNodes();
-  const chain = await createChain(nodes, fromWatcher);
+  let updatingChainFlag = true;
+  let chain = null;
 
-  await consul.kv.set('chain', JSON.stringify(chain));
-
-  const updatingChainFlag = await getValueFromConsul('updatingChain');
+  try {
+    const nodes = await getDBNodes();
+    chain = await createChain(nodes, fromWatcher);
+  
+    await consul.kv.set('chain', JSON.stringify(chain));
+  
+    updatingChainFlag = await getValueFromConsul('updatingChain');
+  } catch (err) {
+    logger.warn(err);
+  }
 
   if (updatingChainFlag) {
     await consul.kv.set('updatingChain', 'false');

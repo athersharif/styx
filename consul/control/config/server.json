@@ -15,7 +15,7 @@
       "type": "checks",
       "handler_type": "http",
       "http_handler_config": {
-        "path": "http://styx-master/adjustchain",
+        "path": "http://localhost/adjustchain",
         "timeout": "10s"
       }
     }

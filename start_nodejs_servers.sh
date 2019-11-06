@@ -10,6 +10,8 @@ docker exec -d styx-db-3 bash -c 'cd /opt/server && npm start'
 docker exec -d styx-db-4 bash -c 'cd /opt/server && npm start'
 docker exec -d styx-db-5 bash -c 'cd /opt/server && npm start'
 
+docker exec -d styx-master sh -c 'cd /opt/server && npm start'
+
 sleep 5
 
 echo "servers started."
