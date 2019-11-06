@@ -17,9 +17,9 @@ export const adjustChain = async (fromWatcher = true) => {
   try {
     const nodes = await getDBNodes();
     chain = await createChain(nodes, fromWatcher);
-  
+
     await consul.kv.set('chain', JSON.stringify(chain));
-  
+
     updatingChainFlag = await getValueFromConsul('updatingChain');
   } catch (err) {
     logger.warn(err);

@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
 import max from 'lodash/max';
 import orderBy from 'lodash/orderBy';
+import isArray from 'lodash/isArray';
 import {
   deliverJSONRequest,
   getCurrentChain,
@@ -73,31 +74,61 @@ export const forwardToNextNodeOrDeliver = async ({ req, request, result }) => {
   }
 };
 
-export const makePgCall = async query => {
-  let result = {
-    response: 'unknown error happened',
-    status: 503
-  };
+export const makePgCall = async queries => {
+  let response = null;
+  let result = { response, status: 503 };
 
   try {
     logger.info('initializing pg pool');
 
     const pgPool = new Pool();
+    const client = await pgPool.connect();
 
-    logger.info(`calling query: ${query}`);
+    try {
+      response = [];
 
-    result = {
-      response: await pgPool.query(query),
-      status: 200
-    };
+      await client.query('BEGIN');
 
-    await pgPool.end();
+      try {
+        queries = JSON.parse(queries);
+      } catch (err) {}
+
+      queries = !isArray(queries) ? [queries] : queries;
+
+      await queries.reduce(async (previousPromise, query) => {
+        await previousPromise;
+
+        logger.info(`calling query: ${query}`);
+
+        response = [...response, await client.query(query)];
+      }, Promise.resolve());
+
+      await client.query('COMMIT');
+
+      result = { response, status: 200 };
+    } catch (err) {
+      await client.query('ROLLBACK');
+
+      logger.warn(err);
+
+      result = {
+        response: err.message,
+        status: 400
+      };
+    } finally {
+      client.release();
+    }
   } catch (err) {
     logger.warn(err);
+
     result = {
       response: err.message,
       status: 400
     };
+  }
+
+  if (response === null) {
+    result.response = 'unknown error happened';
   }
 
   return result;
@@ -122,8 +153,6 @@ export const performPendingOperations = async req => {
       }),
     ['timestamp']
   );
-
-  console.log(pendingOperations);
 
   logger.info(`Found ${pendingOperations.length} pending operations`);
 
