@@ -22,37 +22,46 @@ app.post('/read', async (req, res) => {
   logger.info('Fetching request from consul.');
 
   let request = null;
+  let result = null;
 
-  try {
-    request = await getValueFromConsul(`req/all/read/${req.body.hash}`);
-  } catch (err) {
-    logger.error(err);
+  const directQuery = req.body.direct || false;
+
+  if (directQuery) {
+    logger.info('Direct query. Skipping Styx things ...');
+
+    result = await makePgCall(req.body.query);
+  } else {
+    try {
+      request = await getValueFromConsul(`req/all/read/${req.body.hash}`);
+    } catch (err) {
+      logger.error(err);
+    }
+
+    await performPendingOperations(req);
+
+    logger.info(`Processing read operation: ${JSON.stringify(request)}`);
+
+    result = await makePgCall(request.request.query);
+
+    await consul.kv.set(
+      `req/nodes/${req.headers.host}/read/${req.body.hash}`,
+      'completed'
+    );
+
+    logger.info('Processed read operation.');
+
+    logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
+
+    await consul.kv.set(
+      `req/all/read/${req.body.hash}`,
+      JSON.stringify({
+        request,
+        status: 'completed',
+        timestamp: Date.now(),
+        result: result.response
+      })
+    );
   }
-
-  await performPendingOperations(req);
-
-  logger.info(`Processing read operation: ${JSON.stringify(request)}`);
-
-  const result = await makePgCall(request.request.query);
-
-  await consul.kv.set(
-    `req/nodes/${req.headers.host}/read/${req.body.hash}`,
-    'completed'
-  );
-
-  logger.info('Processed read operation.');
-
-  logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
-
-  await consul.kv.set(
-    `req/all/read/${req.body.hash}`,
-    JSON.stringify({
-      request,
-      status: 'completed',
-      timestamp: Date.now(),
-      result: result.response
-    })
-  );
 
   return res.status(200).send(result);
 });

@@ -26,6 +26,8 @@ docker-remove-all-consul-agent:
 	@docker rm styx-consul-agent-5 -f
 
 docker-remove-all:
+	@docker rm styx-benchmark-server -f
+	@docker rm styx-example-server -f	
 	@docker rm styx-master -f
 	@make docker-remove-all-consul-server
 	@make docker-remove-all-consul-agent
