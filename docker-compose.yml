@@ -17,7 +17,7 @@ x-styx-db: &styx-db
     - PGDATABASE=styx_db
 
 x-styx-consul: &styx-consul 
-  image: "consul:latest"
+  image: consul:latest
   command: agent
 
 x-styx-consul-server: &styx-consul-server 
@@ -30,6 +30,13 @@ x-styx-consul-server: &styx-consul-server
     - styx-consul-agent-2
     - styx-consul-agent-3                  
   
+x-styx-nodejs-server: &styx-nodejs-server 
+  image: node:alpine
+  working_dir: /opt/server/src
+  environment:
+    - NODE_ENV=development
+  command: sh -c "npm install && npm start"
+
 services:
 
   styx-master:
@@ -132,3 +139,23 @@ services:
     container_name: styx-db-5    
     ports:
       - "5445:5432"                  
+
+  styx-benchmark-server:
+    <<: *styx-nodejs-server
+    container_name: styx-benchmark-server    
+    volumes:
+      - "./benchmark/server:/opt/server/"
+      - "./shared:/opt/server/src/shared"      
+      - "/opt/server/node_modules"    
+    ports:
+      - 4001:80
+
+  styx-example-server:
+    <<: *styx-nodejs-server
+    container_name: styx-example-server    
+    volumes:
+      - "./example/server:/opt/server/"
+      - "./shared:/opt/server/src/shared"      
+      - "/opt/server/node_modules"    
+    ports:
+      - 4002:80      
