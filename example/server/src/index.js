@@ -24,9 +24,16 @@ app.post('/read', async (req, res) => {
 });
 
 app.post('/write', async (req, res) => {
-  const response = {};
+  const response = await fetch('http://styx-master/write', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(req.body)
+  });
 
-  return res.status(200).send(response);
+  return res.status(response.status).send(await response.json());
 });
 
 app.listen(port, () => {

@@ -72,27 +72,36 @@ app.post('/write', async (req, res) => {
   logger.info('Fetching request from consul.');
 
   let request = null;
+  let result = null;
 
-  try {
-    request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
-  } catch (err) {
-    logger.error(err);
+  const directQuery = req.body.direct || false;
+
+  if (directQuery) {
+    logger.info('Direct query. Skipping Styx things ...');
+
+    result = await makePgCall(req.body.query);
+  } else {
+    try {
+      request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
+    } catch (err) {
+      logger.error(err);
+    }
+
+    await performPendingOperations(req);
+
+    logger.info(`Processing write operation: ${JSON.stringify(request)}`);
+
+    result = await makePgCall(request.request.query);
+
+    await consul.kv.set(
+      `req/nodes/${req.headers.host}/write/${req.body.hash}`,
+      'completed'
+    );
+
+    logger.info('Processed write operation. Fetching chain.');
+
+    await timedFunction(forwardToNextNodeOrDeliver, { req, request, result });
   }
-
-  await performPendingOperations(req);
-
-  logger.info(`Processing write operation: ${JSON.stringify(request)}`);
-
-  const result = await makePgCall(request.request.query);
-
-  await consul.kv.set(
-    `req/nodes/${req.headers.host}/write/${req.body.hash}`,
-    'completed'
-  );
-
-  logger.info('Processed write operation. Fetching chain.');
-
-  await timedFunction(forwardToNextNodeOrDeliver, { req, request, result });
 
   return res.status(200).send(result);
 });
