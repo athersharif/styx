@@ -74,6 +74,29 @@ export const forwardToNextNodeOrDeliver = async ({ req, request, result }) => {
   }
 };
 
+export const areOtherOperationsInProgress = async ({ hash, host }) => {
+  const operations = orderBy(
+    (
+      (await getValueFromConsul(
+        `req/nodes/${host}/write/`,
+        { recurse: true },
+        true
+      )) || []
+    )
+      .filter(o => o.Value === 'pending')
+      .map(o => {
+        const hash = splitString(o.Key);
+
+        return { hash, timestamp: parseFloat(splitString(hash, '.')) };
+      }),
+    ['timestamp']
+  );
+
+  return {
+    status: operations.length === 0 || operations[0].hash === hash ? 200 : 400
+  };
+};
+
 export const makePgCall = async queries => {
   let response = null;
   let result = { response, status: 503 };
@@ -145,7 +168,7 @@ export const performPendingOperations = async req => {
         true
       )) || []
     )
-      .filter(o => o.Value === 'pending' && !o.Key.includes(req.body.hash))
+      .filter(o => o.Value === 'queued' && !o.Key.includes(req.body.hash))
       .map(o => {
         const hash = splitString(o.Key);
 
@@ -154,22 +177,26 @@ export const performPendingOperations = async req => {
     ['timestamp']
   );
 
-  logger.info(`Found ${pendingOperations.length} pending operations`);
+  logger.info(`Found ${pendingOperations.length} queued operations`);
 
   await pendingOperations.reduce(async (previousPromise, { hash }) => {
     await previousPromise;
 
-    const request = (await getValueFromConsul(`req/all/write/${hash}`)).request;
+    let value = await getValueFromConsul(`req/all/write/${hash}`);
 
-    logger.info(
-      `Processing past write operation: ${hash}: ${JSON.stringify(request)}`
-    );
+    if (value && !value.result) {
+      logger.info(
+        `Processing past write operation: ${hash}: ${JSON.stringify(
+          value.request
+        )}`
+      );
 
-    await makePgCall(request.request.query);
+      await makePgCall(value.request.query);
 
-    await consul.kv.set(
-      `req/nodes/${req.headers.host}/write/${hash}`,
-      'completed'
-    );
+      await consul.kv.set(
+        `req/nodes/${req.headers.host}/write/${hash}`,
+        'completed'
+      );
+    }
   }, Promise.resolve());
 };

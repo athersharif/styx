@@ -144,13 +144,13 @@ export default async (nodes, fromWatcher) => {
       );
 
       logger.info(
-        `Adding ${pendingOperations.length} pending keys from: ${chain.tail} to: ${recoveredNode.address}`
+        `Adding ${pendingOperations.length} queued keys from: ${chain.tail} to: ${recoveredNode.address}`
       );
 
       pendingOperations.forEach(async o => {
         await consul.kv.set(
           `req/nodes/${recoveredNode.address}/write/${o}`,
-          'pending'
+          'queued'
         );
       });
 

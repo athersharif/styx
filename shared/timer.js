@@ -1,7 +1,7 @@
 import isNil from 'lodash/isNil';
 import logger from './logger';
 
-const TIMEOUT = 10000;
+const TIMEOUT = 60000;
 const INTERVAL = 3000;
 
 export default async (fn, args, timeout = TIMEOUT) => {

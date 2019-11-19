@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import {
+  areOtherOperationsInProgress,
   forwardToNextNodeOrDeliver,
   makePgCall,
   performPendingOperations
@@ -81,15 +82,22 @@ app.post('/write', async (req, res) => {
 
     result = await makePgCall(req.body.query);
   } else {
+    await performPendingOperations(req);
+
+    logger.info('Checking and waiting for current operations to finish');
+
+    await timedFunction(areOtherOperationsInProgress, {
+      hash: req.body.hash,
+      host: req.headers.host
+    });
+
+    logger.info(`Processing write operation: ${JSON.stringify(request)}`);
+
     try {
       request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
     } catch (err) {
       logger.error(err);
     }
-
-    await performPendingOperations(req);
-
-    logger.info(`Processing write operation: ${JSON.stringify(request)}`);
 
     result = await makePgCall(request.request.query);
 

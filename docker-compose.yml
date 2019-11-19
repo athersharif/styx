@@ -1,7 +1,6 @@
 version: '3.5'
 
 x-styx-db: &styx-db
-  image: styx/db
   build: ./db
   volumes:
     - "./db/init.sh:/docker-entrypoint-initdb.d/init.sh"
@@ -11,6 +10,7 @@ x-styx-db: &styx-db
     - "/opt/server/node_modules"    
   expose: 
     - "5432"
+  command: "postgres -c 'shared_buffers=256MB' -c 'max_connections=1000'"
   environment:
     - NODE_ENV=development    
     - PGUSER=styx_admin
@@ -22,7 +22,6 @@ x-styx-consul: &styx-consul
 
 x-styx-consul-server: &styx-consul-server 
   <<: *styx-consul
-  image: styx/consul-server
   volumes:
     - "./consul/server/config:/consul/config"
   depends_on:

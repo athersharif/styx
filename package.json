@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint db/server/src consul/agent consul/control/config consul/control/server/src shared/ benchmark/server/src example/server/src ui/src",
-    "prettier": "prettier --single-quote --write '{,!(node_modules|docs|build)/**/}*.{js,css,json}'"
+    "lint": "eslint db/server/src consul/agent consul/control/config consul/control/server/src shared/ benchmark/server/src example/server/src ui/src performance-testing/scripts",
+    "prettier": "prettier --single-quote --write '**/*.{js,css,json}'"
   },
   "author": "Ather Sharif <ather.sharif@gmail.com>",
   "license": "ISC",
