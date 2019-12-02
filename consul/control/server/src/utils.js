@@ -38,12 +38,23 @@ export const getDBNodes = async () => {
   let nodes = [];
 
   try {
-    nodes = (await consul.health.checks('db-server'))[0]
+    const serverNodes = (await consul.health.service('db-server'))[0]
+      .filter(n => n.Checks.every(c => c.Status === 'passing'))
       .map(n => ({
         ...n,
-        address: n.ServiceID
-      }))
-      .filter(n => n.Status === 'passing');
+        address: n.Service.ID.replace('server', 'styx')
+      }));
+
+    const serviceNodes = (await consul.health.service('db-service'))[0]
+      .filter(n => n.Checks.every(c => c.Status === 'passing'))
+      .map(n => ({
+        ...n,
+        address: n.Service.ID.replace('service', 'styx')
+      }));
+
+    nodes = serverNodes.filter(n =>
+      serviceNodes.some(a => a.address === n.address)
+    );
   } catch (err) {
     logger.error(err.cause);
   }
