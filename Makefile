@@ -22,19 +22,16 @@ docker-remove-all-consul-server:
 	@docker rm styx-consul-server-2 -f
 	@docker rm styx-consul-server-3 -f
 
-docker-remove-all-consul-agent:
-	@docker rm styx-consul-agent-1 -f
-	@docker rm styx-consul-agent-2 -f
-	@docker rm styx-consul-agent-3 -f
-	@docker rm styx-consul-agent-4 -f
-	@docker rm styx-consul-agent-5 -f
+docker-restart-all-consul-server:
+	@docker restart styx-consul-server-1
+	@docker restart styx-consul-server-2
+	@docker restart styx-consul-server-3
 
 docker-remove-all:
 	@docker rm styx-benchmark-server -f
 	@docker rm styx-example-server -f	
 	@docker rm styx-master -f
 	@make docker-remove-all-consul-server
-	@make docker-remove-all-consul-agent
 	@make docker-remove-all-db
 
 ssh:

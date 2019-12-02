@@ -1,7 +1,8 @@
 FROM postgres:latest
 
-RUN apt-get update && apt-get install nodejs npm -y
+RUN apt-get update && apt-get install nodejs npm consul -y
 
+RUN mkdir -p /consul/config
 RUN mkdir /opt/server
 WORKDIR /opt/server
 

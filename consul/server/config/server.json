@@ -6,18 +6,18 @@
   "log_level": "INFO",
   "server": true,
   "start_join": [
-    "styx-consul-agent-1",
-    "styx-consul-agent-2",
-    "styx-consul-agent-3",
-    "styx-consul-agent-4",
-    "styx-consul-agent-5"
+    "styx-db-1",
+    "styx-db-2",
+    "styx-db-3",
+    "styx-db-4",
+    "styx-db-5"
   ],
-  "retry_join_wan": [
-    "styx-consul-agent-1",
-    "styx-consul-agent-2",
-    "styx-consul-agent-3",
-    "styx-consul-agent-4",
-    "styx-consul-agent-5"
+  "retry_join": [
+    "styx-db-1",
+    "styx-db-2",
+    "styx-db-3",
+    "styx-db-4",
+    "styx-db-5"
   ],
   "ui": true
 }
