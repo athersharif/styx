@@ -3,70 +3,72 @@ PERFORMING read TESTS
 ----------------------
 running performance test for the benchmark server
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/benchmark-read.json; datadog (localhost:8125)
      script: performance-testing/scripts/benchmark-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  17 kB/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 121 MB  1.1 MB/s
     data_sent..................: 193 kB  1.8 kB/s
-    http_req_blocked...........: avg=57.89µs  min=2µs     med=6µs     max=21.23ms p(90)=13µs    p(95)=22.04µs 
-    http_req_connecting........: avg=10.8µs   min=0s      med=0s      max=1.3ms   p(90)=0s      p(95)=0s      
-    http_req_duration..........: avg=71.19ms  min=12.6ms  med=29.82ms max=1.73s   p(90)=67.85ms p(95)=160.59ms
-    http_req_receiving.........: avg=137.23µs min=47µs    med=83.5µs  max=22.89ms p(90)=148.1µs p(95)=204.09µs
-    http_req_sending...........: avg=56.44µs  min=11µs    med=29µs    max=8.78ms  p(90)=49µs    p(95)=65.04µs 
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s      p(90)=0s      p(95)=0s      
-    http_req_waiting...........: avg=70.99ms  min=12.48ms med=29.6ms  max=1.73s   p(90)=67.74ms p(95)=160.49ms
-    http_reqs..................: 1000    9.261132/s
-    iteration_duration.........: avg=1.07s    min=1.01s   med=1.03s   max=2.74s   p(90)=1.07s   p(95)=1.16s   
-    iterations.................: 1000    9.261132/s
+    http_req_blocked...........: avg=37.31µs min=3µs     med=6µs     max=4.85ms p(90)=12µs    p(95)=18µs
+    http_req_connecting........: avg=16.31µs min=0s      med=0s      max=3.26ms p(90)=0s      p(95)=0s
+    http_req_duration..........: avg=64.24ms min=18.56ms med=29.19ms max=1.27s  p(90)=87.18ms p(95)=192.41ms
+    http_req_receiving.........: avg=1.97ms  min=519µs   med=1.38ms  max=37.5ms p(90)=3.24ms  p(95)=4.69ms
+    http_req_sending...........: avg=42.3µs  min=15µs    med=26µs    max=3.49ms p(90)=43.1µs  p(95)=56µs
+    http_req_tls_handshaking...: avg=0s      min=0s      med=0s      max=0s     p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=62.22ms min=17.37ms med=27.56ms max=1.27s  p(90)=85.13ms p(95)=189.48ms
+    http_reqs..................: 1000    9.347347/s
+    iteration_duration.........: avg=1.06s   min=1.01s   med=1.03s   max=2.27s  p(90)=1.08s   p(95)=1.19s
+    iterations.................: 1000    9.347347/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
 Success! Deleted keys with prefix: req/
 running performance test for styx server - using 5 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-read-5.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  12 kB/s
-    data_sent..................: 179 kB  1.2 kB/s
-    http_req_blocked...........: avg=31.6µs   min=2µs     med=6µs      max=2.61ms p(90)=14µs    p(95)=19.04µs
-    http_req_connecting........: avg=17.18µs  min=0s      med=0s       max=2.43ms p(90)=0s      p(95)=0s     
-    http_req_duration..........: avg=503.01ms min=83.08ms med=363.44ms max=4.76s  p(90)=1s      p(95)=1.26s  
-    http_req_receiving.........: avg=103.99µs min=57µs    med=90µs     max=1.06ms p(90)=133.1µs p(95)=169µs  
-    http_req_sending...........: avg=39.92µs  min=11µs    med=28µs     max=1.48ms p(90)=51µs    p(95)=70.04µs
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s      p(95)=0s     
-    http_req_waiting...........: avg=502.87ms min=82.93ms med=363.34ms max=4.76s  p(90)=1s      p(95)=1.26s  
-    http_reqs..................: 1000    6.624393/s
-    iteration_duration.........: avg=1.5s     min=1.08s   med=1.36s    max=5.77s  p(90)=2s      p(95)=2.26s  
-    iterations.................: 1000    6.624393/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 121 MB  945 kB/s
+    data_sent..................: 179 kB  1.4 kB/s
+    http_req_blocked...........: avg=42.76µs  min=3µs     med=7µs      max=4.21ms   p(90)=19.1µs   p(95)=30µs
+    http_req_connecting........: avg=15.45µs  min=0s      med=0s       max=2.26ms   p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=270.52ms min=77.44ms med=180.82ms max=1.78s    p(90)=501.06ms p(95)=889.66ms
+    http_req_receiving.........: avg=3.61ms   min=599µs   med=1.82ms   max=982.19ms p(90)=4.58ms   p(95)=6.95ms
+    http_req_sending...........: avg=42.91µs  min=16µs    med=29µs     max=1.21ms   p(90)=58µs     p(95)=75µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=266.86ms min=75.55ms med=177.65ms max=1.77s    p(90)=493.21ms p(95)=868.21ms
+    http_reqs..................: 1000    7.833837/s
+    iteration_duration.........: avg=1.27s    min=1.07s   med=1.18s    max=2.78s    p(90)=1.5s     p(95)=1.89s
+    iterations.................: 1000    7.833837/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -74,35 +76,36 @@ Success! Deleted keys with prefix: req/
 styx-db-1
 running performance test for styx server - using 4 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-read-4.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  13 kB/s
-    data_sent..................: 179 kB  1.3 kB/s
-    http_req_blocked...........: avg=178.82µs min=2µs     med=7µs      max=18.3ms  p(90)=14µs     p(95)=20µs    
-    http_req_connecting........: avg=134.72µs min=0s      med=0s       max=17.61ms p(90)=0s       p(95)=0s      
-    http_req_duration..........: avg=415.72ms min=85.09ms med=308.79ms max=4.64s   p(90)=718.81ms p(95)=967.9ms 
-    http_req_receiving.........: avg=104.29µs min=45µs    med=89µs     max=1.56ms  p(90)=135µs    p(95)=173.04µs
-    http_req_sending...........: avg=69.36µs  min=9µs     med=28µs     max=4.17ms  p(90)=51µs     p(95)=76µs    
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s      
-    http_req_waiting...........: avg=415.55ms min=84.97ms med=308.68ms max=4.64s   p(90)=718.66ms p(95)=967.75ms
-    http_reqs..................: 1000    7.021217/s
-    iteration_duration.........: avg=1.41s    min=1.08s   med=1.31s    max=5.65s   p(90)=1.72s    p(95)=1.97s   
-    iterations.................: 1000    7.021217/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 181 MB  1.4 MB/s
+    data_sent..................: 179 kB  1.4 kB/s
+    http_req_blocked...........: avg=48.27µs  min=4µs     med=7µs      max=5.09ms  p(90)=22µs     p(95)=34.04µs
+    http_req_connecting........: avg=16.15µs  min=0s      med=0s       max=2.36ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=305.84ms min=84.69ms med=210.35ms max=1.79s   p(90)=563.8ms  p(95)=898.93ms
+    http_req_receiving.........: avg=4.23ms   min=1.22ms  med=3.1ms    max=73.15ms p(90)=7.12ms   p(95)=10.02ms
+    http_req_sending...........: avg=47.17µs  min=16µs    med=28µs     max=1.54ms  p(90)=57µs     p(95)=76.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=301.55ms min=82.3ms  med=206.48ms max=1.78s   p(90)=560.16ms p(95)=887.17ms
+    http_reqs..................: 1000    7.629904/s
+    iteration_duration.........: avg=1.3s     min=1.08s   med=1.21s    max=2.79s   p(90)=1.56s    p(95)=1.9s
+    iterations.................: 1000    7.629904/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -110,35 +113,36 @@ Success! Deleted keys with prefix: req/
 styx-db-2
 running performance test for styx server - using 3 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-read-3.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  13 kB/s
-    data_sent..................: 179 kB  1.3 kB/s
-    http_req_blocked...........: avg=33.58µs  min=3µs     med=6µs      max=4.01ms p(90)=13µs     p(95)=20µs 
-    http_req_connecting........: avg=12.91µs  min=0s      med=0s       max=3.09ms p(90)=0s       p(95)=0s   
-    http_req_duration..........: avg=375.52ms min=89.5ms  med=281.96ms max=2s     p(90)=693.97ms p(95)=1s   
-    http_req_receiving.........: avg=100.64µs min=51µs    med=89µs     max=1.32ms p(90)=131.1µs  p(95)=157µs
-    http_req_sending...........: avg=39.76µs  min=11µs    med=28µs     max=1.31ms p(90)=50.1µs   p(95)=70µs 
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s   
-    http_req_waiting...........: avg=375.38ms min=89.38ms med=281.83ms max=2s     p(90)=693.86ms p(95)=1s   
-    http_reqs..................: 1000    7.217538/s
-    iteration_duration.........: avg=1.37s    min=1.09s   med=1.28s    max=3s     p(90)=1.69s    p(95)=2s   
-    iterations.................: 1000    7.217538/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 181 MB  1.4 MB/s
+    data_sent..................: 179 kB  1.4 kB/s
+    http_req_blocked...........: avg=49.62µs  min=3µs     med=7µs      max=5.14ms p(90)=18µs     p(95)=30µs
+    http_req_connecting........: avg=21.05µs  min=0s      med=0s       max=3.12ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=288.29ms min=92.5ms  med=193.5ms  max=3.13s  p(90)=469.97ms p(95)=867.8ms
+    http_req_receiving.........: avg=4.18ms   min=1.24ms  med=3.05ms   max=76.8ms p(90)=7.31ms   p(95)=9.67ms
+    http_req_sending...........: avg=45.95µs  min=17µs    med=28µs     max=1.28ms p(90)=52.1µs   p(95)=74µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=284.05ms min=89.85ms med=189.82ms max=3.13s  p(90)=460.31ms p(95)=864.31ms
+    http_reqs..................: 1000    7.721404/s
+    iteration_duration.........: avg=1.29s    min=1.09s   med=1.19s    max=4.13s  p(90)=1.47s    p(95)=1.87s
+    iterations.................: 1000    7.721404/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -146,149 +150,147 @@ Success! Deleted keys with prefix: req/
 styx-db-3
 running performance test for styx server - using 2 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-read-2.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  13 kB/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 241 MB  1.7 MB/s
     data_sent..................: 179 kB  1.3 kB/s
-    http_req_blocked...........: avg=33.71µs  min=2µs     med=6µs      max=4.51ms p(90)=16µs     p(95)=21µs 
-    http_req_connecting........: avg=11.21µs  min=0s      med=0s       max=2.11ms p(90)=0s       p(95)=0s   
-    http_req_duration..........: avg=410.92ms min=88.09ms med=285.69ms max=3.53s  p(90)=786.96ms p(95)=1.14s
-    http_req_receiving.........: avg=110.25µs min=53µs    med=89µs     max=2.47ms p(90)=135µs    p(95)=183µs
-    http_req_sending...........: avg=41.68µs  min=11µs    med=28µs     max=3.72ms p(90)=49µs     p(95)=68µs 
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s   
-    http_req_waiting...........: avg=410.77ms min=87.96ms med=285.56ms max=3.53s  p(90)=786.77ms p(95)=1.14s
-    http_reqs..................: 1000    7.039204/s
-    iteration_duration.........: avg=1.41s    min=1.08s   med=1.28s    max=4.54s  p(90)=1.78s    p(95)=2.14s
-    iterations.................: 1000    7.039204/s
+    http_req_blocked...........: avg=58.22µs  min=3µs     med=7µs      max=4.99ms  p(90)=21µs     p(95)=30µs
+    http_req_connecting........: avg=31.55µs  min=0s      med=0s       max=4.91ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=372.95ms min=97.85ms med=277.48ms max=2.55s   p(90)=656.62ms p(95)=863.85ms
+    http_req_receiving.........: avg=5.91ms   min=1.75ms  med=4.23ms   max=73.12ms p(90)=10.09ms  p(95)=15.11ms
+    http_req_sending...........: avg=49.99µs  min=17µs    med=31µs     max=4.68ms  p(90)=60µs     p(95)=82µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=366.99ms min=93.99ms med=269.97ms max=2.55s   p(90)=644.68ms p(95)=856.33ms
+    http_reqs..................: 1000    7.238507/s
+    iteration_duration.........: avg=1.37s    min=1.09s   med=1.27s    max=3.56s   p(90)=1.65s    p(95)=1.86s
+    iterations.................: 1000    7.238507/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
 Success! Deleted keys with prefix: req/
 styx-db-4
-running performance test for styx server - using 1 nodes
+running performance test for styx server - using 1 node
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-read-1.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-read.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.8 MB  13 kB/s
-    data_sent..................: 179 kB  1.3 kB/s
-    http_req_blocked...........: avg=163.03µs min=2µs     med=6µs      max=19.42ms p(90)=13µs     p(95)=22µs    
-    http_req_connecting........: avg=100.2µs  min=0s      med=0s       max=13.94ms p(90)=0s       p(95)=0s      
-    http_req_duration..........: avg=419.48ms min=95.19ms med=253.56ms max=9.61s   p(90)=581.97ms p(95)=913.58ms
-    http_req_receiving.........: avg=107.29µs min=48µs    med=89µs     max=6.11ms  p(90)=135µs    p(95)=164.04µs
-    http_req_sending...........: avg=89.8µs   min=11µs    med=28µs     max=11.1ms  p(90)=52µs     p(95)=68µs    
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s      
-    http_req_waiting...........: avg=419.28ms min=95.03ms med=253.43ms max=9.6s    p(90)=581.8ms  p(95)=913.48ms
-    http_reqs..................: 1000    6.997598/s
-    iteration_duration.........: avg=1.42s    min=1.09s   med=1.25s    max=10.61s  p(90)=1.59s    p(95)=1.91s   
-    iterations.................: 1000    6.997598/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 300 MB  2.0 MB/s
+    data_sent..................: 179 kB  1.2 kB/s
+    http_req_blocked...........: avg=118.43µs min=4µs      med=7µs      max=30.43ms p(90)=24µs     p(95)=46.04µs
+    http_req_connecting........: avg=33.65µs  min=0s       med=0s       max=13.85ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=496.32ms min=120.02ms med=366.47ms max=4.35s   p(90)=874.51ms p(95)=1.16s
+    http_req_receiving.........: avg=7.46ms   min=2.28ms   med=5.33ms   max=80.09ms p(90)=13.59ms  p(95)=18.57ms
+    http_req_sending...........: avg=102.98µs min=15µs     med=30µs     max=7.77ms  p(90)=67µs     p(95)=100µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=488.75ms min=112.34ms med=360.5ms  max=4.33s   p(90)=868.35ms p(95)=1.15s
+    http_reqs..................: 1000    6.641017/s
+    iteration_duration.........: avg=1.49s    min=1.12s    med=1.36s    max=5.36s   p(90)=1.87s    p(95)=2.17s
+    iterations.................: 1000    6.641017/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
-Success! Deleted keys with prefix: req/
-STARTING DB CONTAINERS
-sleeping for 5 seconds before starting servers...
-starting servers...
-servers started.
-waiting for containers to start
-REMOVING EXISTING RESULTS
+
 PERFORMING write TESTS
 ----------------------
 running performance test for the benchmark server
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/benchmark-write.json; datadog (localhost:8125)
      script: performance-testing/scripts/benchmark-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
+    checks.....................: 100.00% ✓ 1000 ✗ 0
     data_received..............: 1.3 MB  12 kB/s
     data_sent..................: 212 kB  2.0 kB/s
-    http_req_blocked...........: avg=36.73µs  min=2µs     med=6µs     max=5.16ms p(90)=11µs    p(95)=18.04µs 
-    http_req_connecting........: avg=13.37µs  min=0s      med=0s      max=2.65ms p(90)=0s      p(95)=0s      
-    http_req_duration..........: avg=66.55ms  min=13.2ms  med=36.43ms max=1.02s  p(90)=84.13ms p(95)=137.24ms
-    http_req_receiving.........: avg=105.12µs min=38µs    med=86.5µs  max=1.09ms p(90)=147.1µs p(95)=195.09µs
-    http_req_sending...........: avg=45.64µs  min=10µs    med=26µs    max=2.96ms p(90)=49µs    p(95)=64µs    
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s     p(90)=0s      p(95)=0s      
-    http_req_waiting...........: avg=66.4ms   min=13.04ms med=36.27ms max=1.02s  p(90)=84.01ms p(95)=136.9ms 
-    http_reqs..................: 1000    9.289658/s
-    iteration_duration.........: avg=1.07s    min=1.01s   med=1.04s   max=2.02s  p(90)=1.08s   p(95)=1.14s   
-    iterations.................: 1000    9.289658/s
+    http_req_blocked...........: avg=47.12µs  min=2µs     med=6µs     max=5.34ms   p(90)=14µs    p(95)=20µs
+    http_req_connecting........: avg=19.67µs  min=0s      med=0s      max=3.13ms   p(90)=0s      p(95)=0s
+    http_req_duration..........: avg=47.32ms  min=11.45ms med=27.71ms max=893.84ms p(90)=72.11ms p(95)=102.22ms
+    http_req_receiving.........: avg=121.35µs min=49µs    med=85µs    max=3.45ms   p(90)=154.1µs p(95)=231.04µs
+    http_req_sending...........: avg=44.37µs  min=11µs    med=26µs    max=4.81ms   p(90)=49µs    p(95)=68µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s       p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=47.15ms  min=11.33ms med=27.58ms max=893.7ms  p(90)=72.01ms p(95)=102.12ms
+    http_reqs..................: 1000    9.478103/s
+    iteration_duration.........: avg=1.04s    min=1.01s   med=1.02s   max=1.89s    p(90)=1.07s   p(95)=1.1s
+    iterations.................: 1000    9.478103/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
 Success! Deleted keys with prefix: req/
 running performance test for styx server - using 5 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-write-5.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.3 MB  3.7 kB/s
-    data_sent..................: 198 kB  565 B/s
-    http_req_blocked...........: avg=26.31µs  min=4µs   med=6.5µs max=2.05ms p(90)=19µs    p(95)=28.04µs 
-    http_req_connecting........: avg=9.56µs   min=0s    med=0s    max=1.38ms p(90)=0s      p(95)=0s      
-    http_req_duration..........: avg=2.49s    min=1.16s med=2.29s max=11.59s p(90)=3.24s   p(95)=3.7s    
-    http_req_receiving.........: avg=106.97µs min=55µs  med=96µs  max=503µs  p(90)=143.1µs p(95)=181.04µs
-    http_req_sending...........: avg=44.5µs   min=18µs  med=29µs  max=2.77ms p(90)=55.1µs  p(95)=80.04µs 
-    http_req_tls_handshaking...: avg=0s       min=0s    med=0s    max=0s     p(90)=0s      p(95)=0s      
-    http_req_waiting...........: avg=2.49s    min=1.16s med=2.29s max=11.59s p(90)=3.24s   p(95)=3.7s    
-    http_reqs..................: 1000    2.85435/s
-    iteration_duration.........: avg=3.49s    min=2.17s med=3.3s  max=12.59s p(90)=4.25s   p(95)=4.7s    
-    iterations.................: 1000    2.85435/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 1.3 MB  5.8 kB/s
+    data_sent..................: 198 kB  879 B/s
+    http_req_blocked...........: avg=95.94µs  min=4µs      med=6µs   max=11.78ms p(90)=13.1µs  p(95)=19µs
+    http_req_connecting........: avg=47.69µs  min=0s       med=0s    max=9.89ms  p(90)=0s      p(95)=0s
+    http_req_duration..........: avg=1.23s    min=310.21ms med=1.04s max=5.6s    p(90)=1.97s   p(95)=2.31s
+    http_req_receiving.........: avg=103.44µs min=56µs     med=89µs  max=2.18ms  p(90)=126.1µs p(95)=157.09µs
+    http_req_sending...........: avg=75.34µs  min=17µs     med=28µs  max=6.84ms  p(90)=46µs    p(95)=68.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s    max=0s      p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=1.23s    min=310.09ms med=1.04s max=5.59s   p(90)=1.97s   p(95)=2.31s
+    http_reqs..................: 1000    4.440142/s
+    iteration_duration.........: avg=2.24s    min=1.31s    med=2.04s max=6.61s   p(90)=2.97s   p(95)=3.31s
+    iterations.................: 1000    4.440142/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -296,35 +298,36 @@ Success! Deleted keys with prefix: req/
 styx-db-1
 running performance test for styx server - using 4 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-write-4.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.3 MB  4.8 kB/s
-    data_sent..................: 198 kB  728 B/s
-    http_req_blocked...........: avg=31.19µs min=4µs      med=7µs   max=3.43ms p(90)=10µs  p(95)=16µs    
-    http_req_connecting........: avg=10.61µs min=0s       med=0s    max=1.51ms p(90)=0s    p(95)=0s      
-    http_req_duration..........: avg=1.7s    min=763.62ms med=1.52s max=12.29s p(90)=2.26s p(95)=2.53s   
-    http_req_receiving.........: avg=101.1µs min=60µs     med=91µs  max=1.56ms p(90)=130µs p(95)=148.04µs
-    http_req_sending...........: avg=41.41µs min=14µs     med=27µs  max=1.25ms p(90)=44µs  p(95)=57.09µs 
-    http_req_tls_handshaking...: avg=0s      min=0s       med=0s    max=0s     p(90)=0s    p(95)=0s      
-    http_req_waiting...........: avg=1.7s    min=763.46ms med=1.52s max=12.29s p(90)=2.26s p(95)=2.53s   
-    http_reqs..................: 1000    3.679483/s
-    iteration_duration.........: avg=2.71s   min=1.77s    med=2.52s max=13.29s p(90)=3.26s p(95)=3.53s   
-    iterations.................: 1000    3.679483/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 1.3 MB  7.4 kB/s
+    data_sent..................: 198 kB  1.1 kB/s
+    http_req_blocked...........: avg=269.41µs min=3µs      med=6µs      max=77.57ms p(90)=11µs     p(95)=16µs
+    http_req_connecting........: avg=120.06µs min=0s       med=0s       max=67.6ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=749.48ms min=372.58ms med=687ms    max=2.88s   p(90)=937.46ms p(95)=1.23s
+    http_req_receiving.........: avg=92.66µs  min=60µs     med=86µs     max=556µs   p(90)=115µs    p(95)=130.04µs
+    http_req_sending...........: avg=76.81µs  min=18µs     med=27µs     max=9.74ms  p(90)=42µs     p(95)=58µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=749.31ms min=372.47ms med=686.83ms max=2.88s   p(90)=937.34ms p(95)=1.23s
+    http_reqs..................: 1000    5.686625/s
+    iteration_duration.........: avg=1.75s    min=1.37s    med=1.68s    max=3.96s   p(90)=1.93s    p(95)=2.23s
+    iterations.................: 1000    5.686625/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -332,35 +335,36 @@ Success! Deleted keys with prefix: req/
 styx-db-2
 running performance test for styx server - using 3 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-write-3.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [========================================================>-] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.3 MB  5.5 kB/s
-    data_sent..................: 198 kB  832 B/s
-    http_req_blocked...........: avg=19.77µs  min=3µs      med=6µs   max=1.6ms p(90)=10µs  p(95)=16µs    
-    http_req_connecting........: avg=5.73µs   min=0s       med=0s    max=762µs p(90)=0s    p(95)=0s      
-    http_req_duration..........: avg=1.36s    min=355.82ms med=1.12s max=8.53s p(90)=2.3s  p(95)=2.83s   
-    http_req_receiving.........: avg=101.05µs min=58µs     med=90µs  max=1.3ms p(90)=128µs p(95)=142.04µs
-    http_req_sending...........: avg=32.29µs  min=18µs     med=28µs  max=262µs p(90)=42µs  p(95)=57.04µs 
-    http_req_tls_handshaking...: avg=0s       min=0s       med=0s    max=0s    p(90)=0s    p(95)=0s      
-    http_req_waiting...........: avg=1.36s    min=355.7ms  med=1.12s max=8.53s p(90)=2.3s  p(95)=2.83s   
-    http_reqs..................: 1000    4.206943/s
-    iteration_duration.........: avg=2.36s    min=1.35s    med=2.12s max=9.53s p(90)=3.3s  p(95)=3.83s   
-    iterations.................: 1000    4.206943/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 1.3 MB  8.0 kB/s
+    data_sent..................: 198 kB  1.2 kB/s
+    http_req_blocked...........: avg=51.58µs  min=2µs      med=6µs      max=15.05ms p(90)=12µs     p(95)=16.04µs
+    http_req_connecting........: avg=11.43µs  min=0s       med=0s       max=1.91ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=615.38ms min=243.36ms med=487.48ms max=4s      p(90)=848.28ms p(95)=1.77s
+    http_req_receiving.........: avg=91.29µs  min=52µs     med=84µs     max=760µs   p(90)=108µs    p(95)=121.04µs
+    http_req_sending...........: avg=47.31µs  min=17µs     med=27µs     max=4.35ms  p(90)=42µs     p(95)=54µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=615.24ms min=243.24ms med=487.38ms max=4s      p(90)=848.17ms p(95)=1.77s
+    http_reqs..................: 1000    6.156559/s
+    iteration_duration.........: avg=1.61s    min=1.24s    med=1.48s    max=5.02s   p(90)=1.85s    p(95)=2.77s
+    iterations.................: 1000    6.156559/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -368,88 +372,72 @@ Success! Deleted keys with prefix: req/
 styx-db-3
 running performance test for styx server - using 2 nodes
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-write-2.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.3 MB  5.9 kB/s
-    data_sent..................: 198 kB  893 B/s
-    http_req_blocked...........: avg=67.03µs  min=4µs      med=6µs      max=8.3ms  p(90)=12µs  p(95)=18µs    
-    http_req_connecting........: avg=52.25µs  min=0s       med=0s       max=7.87ms p(90)=0s    p(95)=0s      
-    http_req_duration..........: avg=1.2s     min=130.05ms med=781.83ms max=11.71s p(90)=2.69s p(95)=3.47s   
-    http_req_receiving.........: avg=100.91µs min=51µs     med=90µs     max=1.83ms p(90)=130µs p(95)=150.04µs
-    http_req_sending...........: avg=42.53µs  min=17µs     med=28µs     max=2.03ms p(90)=48µs  p(95)=61µs    
-    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s     p(90)=0s    p(95)=0s      
-    http_req_waiting...........: avg=1.2s     min=129.93ms med=781.69ms max=11.71s p(90)=2.69s p(95)=3.47s   
-    http_reqs..................: 1000    4.512689/s
-    iteration_duration.........: avg=2.2s     min=1.13s    med=1.78s    max=12.72s p(90)=3.69s p(95)=4.47s   
-    iterations.................: 1000    4.512689/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 1.3 MB  9.3 kB/s
+    data_sent..................: 198 kB  1.4 kB/s
+    http_req_blocked...........: avg=32.24µs  min=3µs      med=6µs      max=8.35ms p(90)=10.1µs   p(95)=15µs
+    http_req_connecting........: avg=13.01µs  min=0s       med=0s       max=6.86ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=389.42ms min=139.75ms med=268.98ms max=2.57s  p(90)=663.77ms p(95)=1.38s
+    http_req_receiving.........: avg=92.8µs   min=55µs     med=83µs     max=1.15ms p(90)=113µs    p(95)=142µs
+    http_req_sending...........: avg=35.05µs  min=16µs     med=27µs     max=854µs  p(90)=41µs     p(95)=53.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=389.29ms min=139.63ms med=268.84ms max=2.57s  p(90)=663.68ms p(95)=1.38s
+    http_reqs..................: 1000    7.162641/s
+    iteration_duration.........: avg=1.39s    min=1.14s    med=1.27s    max=3.57s  p(90)=1.66s    p(95)=2.38s
+    iterations.................: 1000    7.162641/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
 Success! Deleted keys with prefix: req/
 styx-db-4
-running performance test for styx server - using 1 nodes
+running performance test for styx server - using 1 node
 
-          /\      |‾‾|  /‾‾/  /‾/   
-     /\  /  \     |  |_/  /  / /    
-    /  \/    \    |      |  /  ‾‾\  
-   /          \   |  |‾\  \ | (_) | 
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
   / __________ \  |__|  \__\ \___/ .io
 
-    init [----------------------------------------------------------] runner    init [----------------------------------------------------------] options    init [----------------------------------------------------------] executor    init [----------------------------------------------------------]   engine    init [----------------------------------------------------------]   collector    init [----------------------------------------------------------]   server  execution: local
+    init [----------------------------------------------------------]   collecto  execution: local
      output: json=performance-testing/results/styx-write-1.json; datadog (localhost:8125)
      script: performance-testing/scripts/styx-write.js
 
-    duration: -,  iterations: 1000
+    duration: -,   iterations: 1000
          vus: 10, max: 10
 
-    init [----------------------------------------------------------] starting
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+
     ✓ status was 200
 
-    checks.....................: 100.00% ✓ 1000 ✗ 0   
-    data_received..............: 1.3 MB  6.4 kB/s
-    data_sent..................: 198 kB  967 B/s
-    http_req_blocked...........: avg=24.24µs min=4µs      med=6µs      max=2.93ms p(90)=14µs  p(95)=19µs   
-    http_req_connecting........: avg=8.62µs  min=0s       med=0s       max=2.09ms p(90)=0s    p(95)=0s     
-    http_req_duration..........: avg=1.02s   min=111.9ms  med=731.58ms max=5.16s  p(90)=2.24s p(95)=2.96s  
-    http_req_receiving.........: avg=99.37µs min=55µs     med=90µs     max=903µs  p(90)=121µs p(95)=141µs  
-    http_req_sending...........: avg=34.54µs min=15µs     med=28µs     max=433µs  p(90)=50µs  p(95)=63.09µs
-    http_req_tls_handshaking...: avg=0s      min=0s       med=0s       max=0s     p(90)=0s    p(95)=0s     
-    http_req_waiting...........: avg=1.02s   min=111.78ms med=731.45ms max=5.16s  p(90)=2.24s p(95)=2.96s  
-    http_reqs..................: 1000    4.888799/s
-    iteration_duration.........: avg=2.03s   min=1.11s    med=1.73s    max=6.16s  p(90)=3.24s p(95)=3.96s  
-    iterations.................: 1000    4.888799/s
+    checks.....................: 100.00% ✓ 1000 ✗ 0
+    data_received..............: 1.3 MB  11 kB/s
+    data_sent..................: 198 kB  1.6 kB/s
+    http_req_blocked...........: avg=58.5µs   min=4µs     med=6µs      max=7.59ms p(90)=11µs     p(95)=16µs
+    http_req_connecting........: avg=28.3µs   min=0s      med=0s       max=4.06ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=219.83ms min=83.94ms med=152.39ms max=1.53s  p(90)=367.45ms p(95)=609.53ms
+    http_req_receiving.........: avg=87.51µs  min=50µs    med=80µs     max=538µs  p(90)=108µs    p(95)=135.04µs
+    http_req_sending...........: avg=48.15µs  min=14µs    med=27µs     max=2.69ms p(90)=43µs     p(95)=59µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=219.69ms min=83.84ms med=152.29ms max=1.53s  p(90)=367.32ms p(95)=609.44ms
+    http_reqs..................: 1000    8.152861/s
+    iteration_duration.........: avg=1.22s    min=1.08s   med=1.15s    max=2.53s  p(90)=1.36s    p(95)=1.61s
+    iterations.................: 1000    8.152861/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
-
-Success! Deleted keys with prefix: req/
-STARTING DB CONTAINERS
-sleeping for 5 seconds before starting servers...
-starting servers...
-servers started.
-processing performance-testing/results/benchmark-read.json...
-processing performance-testing/results/benchmark-write.json...
-processing performance-testing/results/styx-read-1.json...
-processing performance-testing/results/styx-read-2.json...
-processing performance-testing/results/styx-read-3.json...
-processing performance-testing/results/styx-read-4.json...
-processing performance-testing/results/styx-read-5.json...
-processing performance-testing/results/styx-write-1.json...
-processing performance-testing/results/styx-write-2.json...
-processing performance-testing/results/styx-write-3.json...
-processing performance-testing/results/styx-write-4.json...
-processing performance-testing/results/styx-write-5.json...

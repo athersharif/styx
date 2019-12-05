@@ -25,7 +25,7 @@ export default async (fn, args, timeout = TIMEOUT) => {
           delete response.responseStatus;
         }
       } catch (err) {
-        logger.warn(err);
+        logger.error(err);
         await timedFunction();
       }
     }

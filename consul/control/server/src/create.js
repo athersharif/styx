@@ -119,7 +119,7 @@ export default async (nodes, fromWatcher) => {
         chain.head = recoveredNode.address;
       }
 
-      logger.info(`Fetching the current state from: ${chain.tail}`);
+      // logger.info(`Fetching the current state from: ${chain.tail}`);
 
       const tailOperations = (
         (await getValueFromConsul(
@@ -129,7 +129,7 @@ export default async (nodes, fromWatcher) => {
         )) || []
       ).map(o => splitString(o.Key));
 
-      logger.info(`Fetching the current state from: ${recoveredNode.address}`);
+      // logger.info(`Fetching the current state from: ${recoveredNode.address}`);
 
       const recoveredNodeOperations = (
         (await getValueFromConsul(
@@ -139,25 +139,24 @@ export default async (nodes, fromWatcher) => {
         )) || []
       ).map(o => splitString(o.Key));
 
-      const pendingOperations = tailOperations.filter(
+      const queuedOperations = tailOperations.filter(
         o => !recoveredNodeOperations.some(r => r === o)
       );
 
       logger.info(
-        `Adding ${pendingOperations.length} queued keys from: ${chain.tail} to: ${recoveredNode.address}`
+        `Adding ${queuedOperations.length} queued keys from: ${chain.tail} to: ${recoveredNode.address}`
       );
 
-      pendingOperations.forEach(async o => {
+      queuedOperations.forEach(async o => {
         await consul.kv.set(
-          `req/nodes/${recoveredNode.address}/write/${o}`,
+          `req/nodes/${recoveredNode.address}/queued/${o}`,
           'queued'
         );
       });
 
       chain.tail = recoveredNode.address;
 
-      logger.info(`Node recovered: ${recoveredNode.address}`);
-      logger.info(`Node added to the TAIL: ${recoveredNode.address}`);
+      logger.info(`Node recovered and added to TAIL: ${recoveredNode.address}`);
     }
 
     if (changeHappened) {

@@ -28,8 +28,9 @@ app.post('/write', async (req, res) => {
   return res.status(response.status).send(response);
 });
 
-app.listen(port, () => {
-  recheckChain();
+app.listen(port, async () => {
+  //recheckChain();
+  await adjustChain(false);
 
   console.log(`Master server listening on port ${port}!`);
 });

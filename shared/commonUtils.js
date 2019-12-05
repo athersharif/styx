@@ -52,11 +52,11 @@ export const deliverJSONRequest = async (url, body, to) => {
       status: response.status
     };
 
-    logger.info(
-      `Delivered to ${to} and got response: ${JSON.stringify(response)}`
-    );
+    // logger.info(
+    //   `Delivered to ${to} and got response: ${JSON.stringify(response)}`
+    // );
   } else {
-    logger.warn(`Delivery to ${url} failed`);
+    logger.error(`Delivery to ${url} failed`);
     throw new Error(`Could not make a call to ${url}. Please check the url.`);
   }
 

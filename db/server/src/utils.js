@@ -14,19 +14,25 @@ import logger from './shared/logger';
 const getNextInChain = async host => {
   const chain = await getCurrentChain();
   const chainKeys = Object.keys(chain);
+
+  if (chainKeys.length === 2 && chain[chainKeys[0]] === chain[chainKeys[1]]) {
+    return null;
+  }
+
   const position = chainKeys.find(k => chain[k] === host);
-  const highestBeforeTail = max(
-    chainKeys.filter(k => k !== 'head' && k !== 'tail').map(k => parseInt(k))
-  );
 
   if (position === 'tail') {
     return null;
   }
 
+  const highestBeforeTail = max(
+    chainKeys.filter(k => k !== 'head' && k !== 'tail').map(k => parseInt(k))
+  );
+
   let nextPosition = null;
 
   if (position === 'head') {
-    nextPosition = chain['2'];
+    nextPosition = chain['2'] || chain['tail'];
   } else if (position === highestBeforeTail.toString()) {
     nextPosition = chain['tail'];
   } else if (position !== 'tail') {
@@ -41,20 +47,20 @@ export const forwardToNextNodeOrDeliver = async ({ req, request, result }) => {
     const node = await getNextInChain(req.headers.host);
 
     if (node) {
-      logger.info(`Found next node in chain: ${node}`);
+      //logger.info(`Found next node in chain: ${node}`);
 
-      logger.info('Writing to consul');
+      //logger.info('Writing to consul');
 
       await consul.kv.set(
-        `req/nodes/${node}/write/${req.body.hash}`,
+        `req/nodes/${node}/pending/${req.body.hash}`,
         'pending'
       );
 
-      return await deliverJSONRequest(`http://${node}/write`, req.body, node);
+      deliverJSONRequest(`http://${node}/write`, req.body, node);
     } else {
-      logger.info('No next node, this is the tail');
+      // logger.info('No next node, this is the tail');
 
-      logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
+      //logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
 
       await consul.kv.set(
         `req/all/write/${req.body.hash}`,
@@ -65,9 +71,9 @@ export const forwardToNextNodeOrDeliver = async ({ req, request, result }) => {
           result: result.response
         })
       );
-
-      return { status: 200 };
     }
+
+    return { status: 200 };
   } catch (err) {
     logger.warn(err);
     return { status: 408 };
@@ -78,7 +84,7 @@ export const areOtherOperationsInProgress = async ({ hash, host }) => {
   const operations = orderBy(
     (
       (await getValueFromConsul(
-        `req/nodes/${host}/write/`,
+        `req/nodes/${host}/pending/`,
         { recurse: true },
         true
       )) || []
@@ -102,7 +108,7 @@ export const makePgCall = async queries => {
   let result = { response, status: 503 };
 
   try {
-    logger.info('initializing pg pool');
+    //logger.info('initializing pg pool');
 
     const pgPool = new Pool();
     const client = await pgPool.connect();
@@ -121,7 +127,7 @@ export const makePgCall = async queries => {
       await queries.reduce(async (previousPromise, query) => {
         await previousPromise;
 
-        logger.info(`calling query: ${query}`);
+        //logger.info(`calling query: ${query}`);
 
         response = [...response, await client.query(query)];
       }, Promise.resolve());
@@ -132,7 +138,7 @@ export const makePgCall = async queries => {
     } catch (err) {
       await client.query('ROLLBACK');
 
-      logger.warn(err);
+      logger.error(err);
 
       result = {
         response: err.message,
@@ -142,7 +148,7 @@ export const makePgCall = async queries => {
       client.release();
     }
   } catch (err) {
-    logger.warn(err);
+    logger.error(err);
 
     result = {
       response: err.message,
@@ -157,13 +163,13 @@ export const makePgCall = async queries => {
   return result;
 };
 
-export const performPendingOperations = async req => {
-  logger.info('Checking for past pending operations');
+export const performQueuedOperations = async req => {
+  //logger.info('Checking for past queued operations');
 
-  const pendingOperations = orderBy(
+  const queuedOperations = orderBy(
     (
       (await getValueFromConsul(
-        `req/nodes/${req.headers.host}/write/`,
+        `req/nodes/${req.headers.host}/queued/`,
         { recurse: true },
         true
       )) || []
@@ -177,26 +183,28 @@ export const performPendingOperations = async req => {
     ['timestamp']
   );
 
-  logger.info(`Found ${pendingOperations.length} queued operations`);
+  //logger.info(`Found ${queuedOperations.length} queued operations`);
 
-  await pendingOperations.reduce(async (previousPromise, { hash }) => {
+  await queuedOperations.reduce(async (previousPromise, { hash }) => {
     await previousPromise;
 
     let value = await getValueFromConsul(`req/all/write/${hash}`);
 
-    if (value && !value.result) {
-      logger.info(
-        `Processing past write operation: ${hash}: ${JSON.stringify(
-          value.request
-        )}`
-      );
+    if (value) {
+      // logger.info(
+      //   `Processing past write operation: ${hash}: ${JSON.stringify(
+      //     value.request
+      //   )}`
+      // );
 
-      await makePgCall(value.request.query);
+      await makePgCall(value.request.request.query);
 
       await consul.kv.set(
         `req/nodes/${req.headers.host}/write/${hash}`,
         'completed'
       );
+
+      await consul.kv.del(`req/nodes/${req.headers.host}/queued/${hash}`);
     }
   }, Promise.resolve());
 };

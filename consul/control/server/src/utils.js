@@ -22,7 +22,7 @@ export const adjustChain = async (fromWatcher = true) => {
 
     updatingChainFlag = await getValueFromConsul('updatingChain');
   } catch (err) {
-    logger.warn(err);
+    logger.error(err);
   }
 
   if (updatingChainFlag) {

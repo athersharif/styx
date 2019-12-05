@@ -19,7 +19,7 @@ export default async request => {
   const value = JSON.stringify(request.body);
   const hash = `${generateHash(value)}`;
 
-  logger.info(`Hash generated for write request: ${hash}`);
+  // logger.info(`Hash generated for write request: ${hash}`);
 
   response = await timedFunction(checkUpdatingChainFlag);
 
@@ -46,7 +46,7 @@ const writeToConsul = async ({ hash, request }) => {
   try {
     const chain = await getCurrentChain();
 
-    logger.info(`Writing hash and write request to consul: ${hash}`);
+    //logger.info(`Writing hash and write request to consul: ${hash}`);
 
     await consul.kv.set(`req/nodes/${chain.head}/write/${hash}`, 'pending');
 
@@ -72,9 +72,9 @@ const deliverToHead = async ({ hash, request }) => {
   try {
     const chain = await getCurrentChain();
 
-    logger.info(`Making a write request to: ${chain.head}`);
+    //logger.info(`Making a write request to: ${chain.head}`);
 
-    return await deliverJSONRequest(
+    deliverJSONRequest(
       `http://${chain.head}/write`,
       {
         ...request.body,
@@ -82,8 +82,10 @@ const deliverToHead = async ({ hash, request }) => {
       },
       'HEAD'
     );
+
+    return { status: 200 };
   } catch (err) {
-    logger.warn(err);
+    logger.error(err);
     return {
       error: 'Error delivering the response. Please try again.',
       status: 500
@@ -98,22 +100,22 @@ const fetchResults = async ({ hash, request }) => {
   };
 
   try {
-    logger.info('Fetching results from consul.');
+    //logger.info('Fetching results from consul.');
 
     request = await getValueFromConsul(`req/all/write/${hash}`);
 
     if (request && request.status === 'completed' && request.result) {
-      logger.info(`Request response received for: ${hash}`);
+      //logger.info(`Request response received for: ${hash}`);
 
       response = {
         message: request.result,
         status: 200
       };
     } else {
-      throw new Error('Operation in progress.');
+      //logger.warn('Operation in progress.');
     }
   } catch (err) {
-    logger.warn(err);
+    logger.error(err);
     response = {
       error: 'Error fetching the response. Please try again.',
       status: 500

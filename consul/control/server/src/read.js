@@ -15,7 +15,7 @@ export default async request => {
   const value = JSON.stringify(request.body);
   const hash = `${generateHash(value)}`;
 
-  logger.info(`Hash generated for write request: ${hash}`);
+  //logger.info(`Hash generated for write request: ${hash}`);
 
   response = await timedFunction(checkUpdatingChainFlag);
 
@@ -35,7 +35,7 @@ const fetchResults = async ({ hash, request }) => {
   };
 
   try {
-    logger.info(`Writing hash and read request to consul: ${hash}`);
+    //logger.info(`Writing hash and read request to consul: ${hash}`);
 
     await consul.kv.set(`req/nodes/${chain.tail}/read/${hash}`, 'pending');
 
@@ -47,7 +47,7 @@ const fetchResults = async ({ hash, request }) => {
       })
     );
 
-    logger.info(`Making a read request to: ${chain.tail}`);
+    //logger.info(`Making a read request to: ${chain.tail}`);
 
     return await deliverJSONRequest(
       `http://${chain.tail}/read`,
@@ -58,7 +58,7 @@ const fetchResults = async ({ hash, request }) => {
       'TAIL'
     );
   } catch (err) {
-    logger.warn(err);
+    logger.error(err);
     response = {
       error: 'Error fetching the response. Please try again.',
       status: 500

@@ -4,7 +4,7 @@ import {
   areOtherOperationsInProgress,
   forwardToNextNodeOrDeliver,
   makePgCall,
-  performPendingOperations
+  performQueuedOperations
 } from './utils';
 import { getValueFromConsul } from './shared/commonUtils';
 import consul from './shared/consul';
@@ -18,9 +18,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/read', async (req, res) => {
-  logger.info(`Read operation request received: ${JSON.stringify(req.body)}`);
+  // logger.info(`Read operation request received: ${JSON.stringify(req.body)}`);
 
-  logger.info('Fetching request from consul.');
+  // logger.info('Fetching request from consul.');
 
   let request = null;
   let result = null;
@@ -38,9 +38,9 @@ app.post('/read', async (req, res) => {
       logger.error(err);
     }
 
-    await performPendingOperations(req);
+    await performQueuedOperations(req);
 
-    logger.info(`Processing read operation: ${JSON.stringify(request)}`);
+    // logger.info(`Processing read operation: ${JSON.stringify(request)}`);
 
     result = await makePgCall(request.request.query);
 
@@ -49,9 +49,9 @@ app.post('/read', async (req, res) => {
       'completed'
     );
 
-    logger.info('Processed read operation.');
+    // logger.info('Processed read operation.');
 
-    logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
+    // logger.info(`Updating the hash status on consul for: ${req.body.hash}`);
 
     await consul.kv.set(
       `req/all/read/${req.body.hash}`,
@@ -70,7 +70,7 @@ app.post('/read', async (req, res) => {
 app.post('/write', async (req, res) => {
   logger.info(`Write operation request received: ${JSON.stringify(req.body)}`);
 
-  logger.info('Fetching request from consul.');
+  //logger.info('Fetching request from consul.');
 
   let request = null;
   let result = null;
@@ -82,16 +82,16 @@ app.post('/write', async (req, res) => {
 
     result = await makePgCall(req.body.query);
   } else {
-    await performPendingOperations(req);
+    await performQueuedOperations(req);
 
-    logger.info('Checking and waiting for current operations to finish');
+    //logger.info('Checking and waiting for current operations to finish');
 
     await timedFunction(areOtherOperationsInProgress, {
       hash: req.body.hash,
       host: req.headers.host
     });
 
-    logger.info(`Processing write operation: ${JSON.stringify(request)}`);
+    //logger.info(`Processing write operation: ${JSON.stringify(request)}`);
 
     try {
       request = await getValueFromConsul(`req/all/write/${req.body.hash}`);
@@ -106,7 +106,11 @@ app.post('/write', async (req, res) => {
       'completed'
     );
 
-    logger.info('Processed write operation. Fetching chain.');
+    await consul.kv.del(
+      `req/nodes/${req.headers.host}/pending/${req.body.hash}`
+    );
+
+    //logger.info('Processed write operation. Fetching chain.');
 
     await timedFunction(forwardToNextNodeOrDeliver, { req, request, result });
   }
