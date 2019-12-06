@@ -21,18 +21,18 @@ running performance test for the benchmark server
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 121 MB  1.1 MB/s
+    data_received..............: 1.8 MB  17 kB/s
     data_sent..................: 193 kB  1.8 kB/s
-    http_req_blocked...........: avg=37.31µs min=3µs     med=6µs     max=4.85ms p(90)=12µs    p(95)=18µs
-    http_req_connecting........: avg=16.31µs min=0s      med=0s      max=3.26ms p(90)=0s      p(95)=0s
-    http_req_duration..........: avg=64.24ms min=18.56ms med=29.19ms max=1.27s  p(90)=87.18ms p(95)=192.41ms
-    http_req_receiving.........: avg=1.97ms  min=519µs   med=1.38ms  max=37.5ms p(90)=3.24ms  p(95)=4.69ms
-    http_req_sending...........: avg=42.3µs  min=15µs    med=26µs    max=3.49ms p(90)=43.1µs  p(95)=56µs
-    http_req_tls_handshaking...: avg=0s      min=0s      med=0s      max=0s     p(90)=0s      p(95)=0s
-    http_req_waiting...........: avg=62.22ms min=17.37ms med=27.56ms max=1.27s  p(90)=85.13ms p(95)=189.48ms
-    http_reqs..................: 1000    9.347347/s
-    iteration_duration.........: avg=1.06s   min=1.01s   med=1.03s   max=2.27s  p(90)=1.08s   p(95)=1.19s
-    iterations.................: 1000    9.347347/s
+    http_req_blocked...........: avg=50.95µs  min=1µs     med=6µs     max=5.89ms   p(90)=13µs     p(95)=18µs
+    http_req_connecting........: avg=24.63µs  min=0s      med=0s      max=3.79ms   p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=71.72ms  min=13.22ms med=45.42ms max=808.14ms p(90)=137.42ms p(95)=209.47ms
+    http_req_receiving.........: avg=159.53µs min=42µs    med=85µs    max=5.77ms   p(90)=188.4µs  p(95)=354.04µs
+    http_req_sending...........: avg=50.49µs  min=9µs     med=25µs    max=5.2ms    p(90)=45µs     p(95)=66.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s       p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=71.51ms  min=13.08ms med=45.28ms max=807.85ms p(90)=137.27ms p(95)=209.39ms
+    http_reqs..................: 1000    9.25658/s
+    iteration_duration.........: avg=1.07s    min=1.01s   med=1.04s   max=1.81s    p(90)=1.13s    p(95)=1.21s
+    iterations.................: 1000    9.25658/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -52,23 +52,23 @@ running performance test for styx server - using 5 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+ running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 121 MB  945 kB/s
-    data_sent..................: 179 kB  1.4 kB/s
-    http_req_blocked...........: avg=42.76µs  min=3µs     med=7µs      max=4.21ms   p(90)=19.1µs   p(95)=30µs
-    http_req_connecting........: avg=15.45µs  min=0s      med=0s       max=2.26ms   p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=270.52ms min=77.44ms med=180.82ms max=1.78s    p(90)=501.06ms p(95)=889.66ms
-    http_req_receiving.........: avg=3.61ms   min=599µs   med=1.82ms   max=982.19ms p(90)=4.58ms   p(95)=6.95ms
-    http_req_sending...........: avg=42.91µs  min=16µs    med=29µs     max=1.21ms   p(90)=58µs     p(95)=75µs
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=266.86ms min=75.55ms med=177.65ms max=1.77s    p(90)=493.21ms p(95)=868.21ms
-    http_reqs..................: 1000    7.833837/s
-    iteration_duration.........: avg=1.27s    min=1.07s   med=1.18s    max=2.78s    p(90)=1.5s     p(95)=1.89s
-    iterations.................: 1000    7.833837/s
+    data_received..............: 1.8 MB  13 kB/s
+    data_sent..................: 179 kB  1.3 kB/s
+    http_req_blocked...........: avg=20.07µs  min=2µs     med=6µs      max=1.64ms p(90)=11µs     p(95)=17µs
+    http_req_connecting........: avg=5.55µs   min=0s      med=0s       max=741µs  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=411.84ms min=73.2ms  med=280.1ms  max=3s     p(90)=859.4ms  p(95)=1.15s
+    http_req_receiving.........: avg=93.63µs  min=49µs    med=82µs     max=1.73ms p(90)=121µs    p(95)=135.04µs
+    http_req_sending...........: avg=33.51µs  min=10µs    med=27µs     max=540µs  p(90)=43.1µs   p(95)=55.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=411.71ms min=73.06ms med=279.95ms max=3s     p(90)=859.28ms p(95)=1.15s
+    http_reqs..................: 1000    7.033519/s
+    iteration_duration.........: avg=1.41s    min=1.07s   med=1.28s    max=4s     p(90)=1.85s    p(95)=2.15s
+    iterations.................: 1000    7.033519/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -94,18 +94,18 @@ running performance test for styx server - using 4 nodes
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 181 MB  1.4 MB/s
-    data_sent..................: 179 kB  1.4 kB/s
-    http_req_blocked...........: avg=48.27µs  min=4µs     med=7µs      max=5.09ms  p(90)=22µs     p(95)=34.04µs
-    http_req_connecting........: avg=16.15µs  min=0s      med=0s       max=2.36ms  p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=305.84ms min=84.69ms med=210.35ms max=1.79s   p(90)=563.8ms  p(95)=898.93ms
-    http_req_receiving.........: avg=4.23ms   min=1.22ms  med=3.1ms    max=73.15ms p(90)=7.12ms   p(95)=10.02ms
-    http_req_sending...........: avg=47.17µs  min=16µs    med=28µs     max=1.54ms  p(90)=57µs     p(95)=76.04µs
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=301.55ms min=82.3ms  med=206.48ms max=1.78s   p(90)=560.16ms p(95)=887.17ms
-    http_reqs..................: 1000    7.629904/s
-    iteration_duration.........: avg=1.3s     min=1.08s   med=1.21s    max=2.79s   p(90)=1.56s    p(95)=1.9s
-    iterations.................: 1000    7.629904/s
+    data_received..............: 1.8 MB  13 kB/s
+    data_sent..................: 179 kB  1.3 kB/s
+    http_req_blocked...........: avg=47.1µs   min=3µs     med=6µs      max=7.91ms p(90)=11µs     p(95)=17µs
+    http_req_connecting........: avg=23.64µs  min=0s      med=0s       max=5.85ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=341.88ms min=74.97ms med=234.32ms max=2.1s   p(90)=704.53ms p(95)=1.01s
+    http_req_receiving.........: avg=93.74µs  min=51µs    med=83µs     max=1.36ms p(90)=114µs    p(95)=130.04µs
+    http_req_sending...........: avg=44.57µs  min=11µs    med=26µs     max=2.96ms p(90)=41µs     p(95)=50.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=341.74ms min=74.86ms med=234.18ms max=2.1s   p(90)=704.43ms p(95)=1.01s
+    http_reqs..................: 1000    7.409047/s
+    iteration_duration.........: avg=1.34s    min=1.07s   med=1.23s    max=3.1s   p(90)=1.7s     p(95)=2.01s
+    iterations.................: 1000    7.409047/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -126,23 +126,23 @@ running performance test for styx server - using 3 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 181 MB  1.4 MB/s
+    data_received..............: 1.8 MB  14 kB/s
     data_sent..................: 179 kB  1.4 kB/s
-    http_req_blocked...........: avg=49.62µs  min=3µs     med=7µs      max=5.14ms p(90)=18µs     p(95)=30µs
-    http_req_connecting........: avg=21.05µs  min=0s      med=0s       max=3.12ms p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=288.29ms min=92.5ms  med=193.5ms  max=3.13s  p(90)=469.97ms p(95)=867.8ms
-    http_req_receiving.........: avg=4.18ms   min=1.24ms  med=3.05ms   max=76.8ms p(90)=7.31ms   p(95)=9.67ms
-    http_req_sending...........: avg=45.95µs  min=17µs    med=28µs     max=1.28ms p(90)=52.1µs   p(95)=74µs
+    http_req_blocked...........: avg=27.25µs  min=3µs     med=6µs      max=2.94ms p(90)=12µs     p(95)=17µs
+    http_req_connecting........: avg=10.59µs  min=0s      med=0s       max=1.58ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=247.81ms min=75.94ms med=169.59ms max=1.92s  p(90)=406.68ms p(95)=875.34ms
+    http_req_receiving.........: avg=99.03µs  min=51µs    med=84µs     max=1.27ms p(90)=126µs    p(95)=161µs
+    http_req_sending...........: avg=38.12µs  min=13µs    med=27µs     max=1.46ms p(90)=45µs     p(95)=57.04µs
     http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=284.05ms min=89.85ms med=189.82ms max=3.13s  p(90)=460.31ms p(95)=864.31ms
-    http_reqs..................: 1000    7.721404/s
-    iteration_duration.........: avg=1.29s    min=1.09s   med=1.19s    max=4.13s  p(90)=1.47s    p(95)=1.87s
-    iterations.................: 1000    7.721404/s
+    http_req_waiting...........: avg=247.67ms min=75.84ms med=169.42ms max=1.92s  p(90)=406.52ms p(95)=875.26ms
+    http_reqs..................: 1000    7.974271/s
+    iteration_duration.........: avg=1.24s    min=1.07s   med=1.17s    max=2.92s  p(90)=1.4s     p(95)=1.87s
+    iterations.................: 1000    7.974271/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -163,23 +163,23 @@ running performance test for styx server - using 2 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 241 MB  1.7 MB/s
+    data_received..............: 1.8 MB  13 kB/s
     data_sent..................: 179 kB  1.3 kB/s
-    http_req_blocked...........: avg=58.22µs  min=3µs     med=7µs      max=4.99ms  p(90)=21µs     p(95)=30µs
-    http_req_connecting........: avg=31.55µs  min=0s      med=0s       max=4.91ms  p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=372.95ms min=97.85ms med=277.48ms max=2.55s   p(90)=656.62ms p(95)=863.85ms
-    http_req_receiving.........: avg=5.91ms   min=1.75ms  med=4.23ms   max=73.12ms p(90)=10.09ms  p(95)=15.11ms
-    http_req_sending...........: avg=49.99µs  min=17µs    med=31µs     max=4.68ms  p(90)=60µs     p(95)=82µs
+    http_req_blocked...........: avg=46.41µs  min=3µs     med=6µs      max=10.91ms p(90)=14µs     p(95)=19µs
+    http_req_connecting........: avg=15.4µs   min=0s      med=0s       max=8.52ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=347.95ms min=74.18ms med=211.91ms max=3.17s   p(90)=673.73ms p(95)=1.27s
+    http_req_receiving.........: avg=100.16µs min=47µs    med=86µs     max=1.03ms  p(90)=131µs    p(95)=167.19µs
+    http_req_sending...........: avg=49.34µs  min=11µs    med=27µs     max=3.13ms  p(90)=47µs     p(95)=66µs
     http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=366.99ms min=93.99ms med=269.97ms max=2.55s   p(90)=644.68ms p(95)=856.33ms
-    http_reqs..................: 1000    7.238507/s
-    iteration_duration.........: avg=1.37s    min=1.09s   med=1.27s    max=3.56s   p(90)=1.65s    p(95)=1.86s
-    iterations.................: 1000    7.238507/s
+    http_req_waiting...........: avg=347.8ms  min=74.05ms med=211.77ms max=3.17s   p(90)=673.59ms p(95)=1.26s
+    http_reqs..................: 1000    7.372981/s
+    iteration_duration.........: avg=1.35s    min=1.07s   med=1.21s    max=4.18s   p(90)=1.67s    p(95)=2.27s
+    iterations.................: 1000    7.372981/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -200,23 +200,23 @@ running performance test for styx server - using 1 node
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100 running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+ running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 300 MB  2.0 MB/s
-    data_sent..................: 179 kB  1.2 kB/s
-    http_req_blocked...........: avg=118.43µs min=4µs      med=7µs      max=30.43ms p(90)=24µs     p(95)=46.04µs
-    http_req_connecting........: avg=33.65µs  min=0s       med=0s       max=13.85ms p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=496.32ms min=120.02ms med=366.47ms max=4.35s   p(90)=874.51ms p(95)=1.16s
-    http_req_receiving.........: avg=7.46ms   min=2.28ms   med=5.33ms   max=80.09ms p(90)=13.59ms  p(95)=18.57ms
-    http_req_sending...........: avg=102.98µs min=15µs     med=30µs     max=7.77ms  p(90)=67µs     p(95)=100µs
-    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=488.75ms min=112.34ms med=360.5ms  max=4.33s   p(90)=868.35ms p(95)=1.15s
-    http_reqs..................: 1000    6.641017/s
-    iteration_duration.........: avg=1.49s    min=1.12s    med=1.36s    max=5.36s   p(90)=1.87s    p(95)=2.17s
-    iterations.................: 1000    6.641017/s
+    data_received..............: 1.8 MB  14 kB/s
+    data_sent..................: 179 kB  1.4 kB/s
+    http_req_blocked...........: avg=270.9µs  min=2µs     med=6µs      max=31.45ms p(90)=11µs     p(95)=15.04µs
+    http_req_connecting........: avg=141.06µs min=0s      med=0s       max=27.3ms  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=250.65ms min=68.72ms med=159.37ms max=2.19s   p(90)=385.85ms p(95)=755.91ms
+    http_req_receiving.........: avg=97.75µs  min=50µs    med=81µs     max=3.52ms  p(90)=113µs    p(95)=143µs
+    http_req_sending...........: avg=148µs    min=12µs    med=27µs     max=16.88ms p(90)=47.1µs   p(95)=67µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=250.41ms min=68.61ms med=159.25ms max=2.19s   p(90)=385.7ms  p(95)=755.83ms
+    http_reqs..................: 1000    7.959241/s
+    iteration_duration.........: avg=1.25s    min=1.06s   med=1.16s    max=3.19s   p(90)=1.38s    p(95)=1.75s
+    iterations.................: 1000    7.959241/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -238,23 +238,23 @@ running performance test for the benchmark server
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
     data_received..............: 1.3 MB  12 kB/s
     data_sent..................: 212 kB  2.0 kB/s
-    http_req_blocked...........: avg=47.12µs  min=2µs     med=6µs     max=5.34ms   p(90)=14µs    p(95)=20µs
-    http_req_connecting........: avg=19.67µs  min=0s      med=0s      max=3.13ms   p(90)=0s      p(95)=0s
-    http_req_duration..........: avg=47.32ms  min=11.45ms med=27.71ms max=893.84ms p(90)=72.11ms p(95)=102.22ms
-    http_req_receiving.........: avg=121.35µs min=49µs    med=85µs    max=3.45ms   p(90)=154.1µs p(95)=231.04µs
-    http_req_sending...........: avg=44.37µs  min=11µs    med=26µs    max=4.81ms   p(90)=49µs    p(95)=68µs
-    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s       p(90)=0s      p(95)=0s
-    http_req_waiting...........: avg=47.15ms  min=11.33ms med=27.58ms max=893.7ms  p(90)=72.01ms p(95)=102.12ms
-    http_reqs..................: 1000    9.478103/s
-    iteration_duration.........: avg=1.04s    min=1.01s   med=1.02s   max=1.89s    p(90)=1.07s   p(95)=1.1s
-    iterations.................: 1000    9.478103/s
+    http_req_blocked...........: avg=23.23µs min=2µs     med=6µs     max=2.3ms    p(90)=14µs    p(95)=21µs
+    http_req_connecting........: avg=7.49µs  min=0s      med=0s      max=902µs    p(90)=0s      p(95)=0s
+    http_req_duration..........: avg=36.28ms min=12.83ms med=31.58ms max=335.23ms p(90)=48.79ms p(95)=65.16ms
+    http_req_receiving.........: avg=109.2µs min=50µs    med=88µs    max=1.15ms   p(90)=158µs   p(95)=241.04µs
+    http_req_sending...........: avg=34.68µs min=11µs    med=28µs    max=686µs    p(90)=48.1µs  p(95)=67.04µs
+    http_req_tls_handshaking...: avg=0s      min=0s      med=0s      max=0s       p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=36.14ms min=12.73ms med=31.41ms max=334.92ms p(90)=48.63ms p(95)=64.96ms
+    http_reqs..................: 1000    9.593398/s
+    iteration_duration.........: avg=1.03s   min=1.01s   med=1.03s   max=1.33s    p(90)=1.04s   p(95)=1.06s
+    iterations.................: 1000    9.593398/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -279,18 +279,18 @@ running performance test for styx server - using 5 nodes
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 1.3 MB  5.8 kB/s
-    data_sent..................: 198 kB  879 B/s
-    http_req_blocked...........: avg=95.94µs  min=4µs      med=6µs   max=11.78ms p(90)=13.1µs  p(95)=19µs
-    http_req_connecting........: avg=47.69µs  min=0s       med=0s    max=9.89ms  p(90)=0s      p(95)=0s
-    http_req_duration..........: avg=1.23s    min=310.21ms med=1.04s max=5.6s    p(90)=1.97s   p(95)=2.31s
-    http_req_receiving.........: avg=103.44µs min=56µs     med=89µs  max=2.18ms  p(90)=126.1µs p(95)=157.09µs
-    http_req_sending...........: avg=75.34µs  min=17µs     med=28µs  max=6.84ms  p(90)=46µs    p(95)=68.04µs
-    http_req_tls_handshaking...: avg=0s       min=0s       med=0s    max=0s      p(90)=0s      p(95)=0s
-    http_req_waiting...........: avg=1.23s    min=310.09ms med=1.04s max=5.59s   p(90)=1.97s   p(95)=2.31s
-    http_reqs..................: 1000    4.440142/s
-    iteration_duration.........: avg=2.24s    min=1.31s    med=2.04s max=6.61s   p(90)=2.97s   p(95)=3.31s
-    iterations.................: 1000    4.440142/s
+    data_received..............: 1.3 MB  5.0 kB/s
+    data_sent..................: 198 kB  767 B/s
+    http_req_blocked...........: avg=56.19µs min=4µs      med=6µs  max=10.69ms p(90)=9µs   p(95)=14µs
+    http_req_connecting........: avg=35.55µs min=0s       med=0s   max=9.82ms  p(90)=0s    p(95)=0s
+    http_req_duration..........: avg=1.56s   min=915.31ms med=1.5s max=4.84s   p(90)=1.82s p(95)=2.04s
+    http_req_receiving.........: avg=87.37µs min=51µs     med=84µs max=428µs   p(90)=104µs p(95)=114µs
+    http_req_sending...........: avg=38.95µs min=18µs     med=27µs max=2.3ms   p(90)=37µs  p(95)=47µs
+    http_req_tls_handshaking...: avg=0s      min=0s       med=0s   max=0s      p(90)=0s    p(95)=0s
+    http_req_waiting...........: avg=1.56s   min=915.2ms  med=1.5s max=4.84s   p(90)=1.82s p(95)=2.04s
+    http_reqs..................: 1000    3.877161/s
+    iteration_duration.........: avg=2.57s   min=1.91s    med=2.5s max=5.85s   p(90)=2.82s p(95)=3.04s
+    iterations.................: 1000    3.877161/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -311,23 +311,23 @@ running performance test for styx server - using 4 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 1.3 MB  7.4 kB/s
-    data_sent..................: 198 kB  1.1 kB/s
-    http_req_blocked...........: avg=269.41µs min=3µs      med=6µs      max=77.57ms p(90)=11µs     p(95)=16µs
-    http_req_connecting........: avg=120.06µs min=0s       med=0s       max=67.6ms  p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=749.48ms min=372.58ms med=687ms    max=2.88s   p(90)=937.46ms p(95)=1.23s
-    http_req_receiving.........: avg=92.66µs  min=60µs     med=86µs     max=556µs   p(90)=115µs    p(95)=130.04µs
-    http_req_sending...........: avg=76.81µs  min=18µs     med=27µs     max=9.74ms  p(90)=42µs     p(95)=58µs
-    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=749.31ms min=372.47ms med=686.83ms max=2.88s   p(90)=937.34ms p(95)=1.23s
-    http_reqs..................: 1000    5.686625/s
-    iteration_duration.........: avg=1.75s    min=1.37s    med=1.68s    max=3.96s   p(90)=1.93s    p(95)=2.23s
-    iterations.................: 1000    5.686625/s
+    data_received..............: 1.3 MB  6.0 kB/s
+    data_sent..................: 198 kB  906 B/s
+    http_req_blocked...........: avg=22.21µs min=4µs      med=6µs   max=2.35ms p(90)=10µs  p(95)=16µs
+    http_req_connecting........: avg=7.72µs  min=0s       med=0s    max=1.82ms p(90)=0s    p(95)=0s
+    http_req_duration..........: avg=1.17s   min=758.09ms med=1.13s max=3.36s  p(90)=1.36s p(95)=1.44s
+    http_req_receiving.........: avg=87.79µs min=58µs     med=84µs  max=728µs  p(90)=103µs p(95)=113µs
+    http_req_sending...........: avg=35.62µs min=19µs     med=27µs  max=1.02ms p(90)=40µs  p(95)=62µs
+    http_req_tls_handshaking...: avg=0s      min=0s       med=0s    max=0s     p(90)=0s    p(95)=0s
+    http_req_waiting...........: avg=1.17s   min=757.99ms med=1.13s max=3.36s  p(90)=1.36s p(95)=1.44s
+    http_reqs..................: 1000    4.579695/s
+    iteration_duration.........: avg=2.17s   min=1.76s    med=2.14s max=4.36s  p(90)=2.36s p(95)=2.45s
+    iterations.................: 1000    4.579695/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -348,23 +348,23 @@ running performance test for styx server - using 3 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [========================================================>-] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 1.3 MB  8.0 kB/s
-    data_sent..................: 198 kB  1.2 kB/s
-    http_req_blocked...........: avg=51.58µs  min=2µs      med=6µs      max=15.05ms p(90)=12µs     p(95)=16.04µs
-    http_req_connecting........: avg=11.43µs  min=0s       med=0s       max=1.91ms  p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=615.38ms min=243.36ms med=487.48ms max=4s      p(90)=848.28ms p(95)=1.77s
-    http_req_receiving.........: avg=91.29µs  min=52µs     med=84µs     max=760µs   p(90)=108µs    p(95)=121.04µs
-    http_req_sending...........: avg=47.31µs  min=17µs     med=27µs     max=4.35ms  p(90)=42µs     p(95)=54µs
+    data_received..............: 1.3 MB  7.0 kB/s
+    data_sent..................: 198 kB  1.1 kB/s
+    http_req_blocked...........: avg=56.69µs  min=4µs      med=6µs      max=12.23ms p(90)=9µs      p(95)=14µs
+    http_req_connecting........: avg=29.15µs  min=0s       med=0s       max=10.16ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=835.89ms min=433.07ms med=774.76ms max=3.23s   p(90)=987.81ms p(95)=1.11s
+    http_req_receiving.........: avg=87.53µs  min=54µs     med=84µs     max=556µs   p(90)=103.1µs  p(95)=115.04µs
+    http_req_sending...........: avg=54.71µs  min=20µs     med=27µs     max=6.23ms  p(90)=39.1µs   p(95)=56.04µs
     http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=615.24ms min=243.24ms med=487.38ms max=4s      p(90)=848.17ms p(95)=1.77s
-    http_reqs..................: 1000    6.156559/s
-    iteration_duration.........: avg=1.61s    min=1.24s    med=1.48s    max=5.02s   p(90)=1.85s    p(95)=2.77s
-    iterations.................: 1000    6.156559/s
+    http_req_waiting...........: avg=835.75ms min=432.96ms med=774.66ms max=3.23s   p(90)=987.69ms p(95)=1.11s
+    http_reqs..................: 1000    5.415931/s
+    iteration_duration.........: avg=1.83s    min=1.43s    med=1.77s    max=4.26s   p(90)=1.98s    p(95)=2.11s
+    iterations.................: 1000    5.415931/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -385,23 +385,23 @@ running performance test for styx server - using 2 nodes
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 1.3 MB  9.3 kB/s
-    data_sent..................: 198 kB  1.4 kB/s
-    http_req_blocked...........: avg=32.24µs  min=3µs      med=6µs      max=8.35ms p(90)=10.1µs   p(95)=15µs
-    http_req_connecting........: avg=13.01µs  min=0s       med=0s       max=6.86ms p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=389.42ms min=139.75ms med=268.98ms max=2.57s  p(90)=663.77ms p(95)=1.38s
-    http_req_receiving.........: avg=92.8µs   min=55µs     med=83µs     max=1.15ms p(90)=113µs    p(95)=142µs
-    http_req_sending...........: avg=35.05µs  min=16µs     med=27µs     max=854µs  p(90)=41µs     p(95)=53.04µs
+    data_received..............: 1.3 MB  8.5 kB/s
+    data_sent..................: 198 kB  1.3 kB/s
+    http_req_blocked...........: avg=29.55µs  min=4µs      med=6µs      max=3.82ms p(90)=10µs     p(95)=14.04µs
+    http_req_connecting........: avg=6.51µs   min=0s       med=0s       max=861µs  p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=524.2ms  min=178.6ms  med=454.78ms max=2.44s  p(90)=657.29ms p(95)=1.36s
+    http_req_receiving.........: avg=90.2µs   min=52µs     med=83µs     max=1.77ms p(90)=103µs    p(95)=113µs
+    http_req_sending...........: avg=44.3µs   min=20µs     med=27µs     max=2.83ms p(90)=39µs     p(95)=54µs
     http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s     p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=389.29ms min=139.63ms med=268.84ms max=2.57s  p(90)=663.68ms p(95)=1.38s
-    http_reqs..................: 1000    7.162641/s
-    iteration_duration.........: avg=1.39s    min=1.14s    med=1.27s    max=3.57s  p(90)=1.66s    p(95)=2.38s
-    iterations.................: 1000    7.162641/s
+    http_req_waiting...........: avg=524.07ms min=178.48ms med=454.64ms max=2.44s  p(90)=657.17ms p(95)=1.36s
+    http_reqs..................: 1000    6.516164/s
+    iteration_duration.........: avg=1.52s    min=1.18s    med=1.45s    max=3.44s  p(90)=1.66s    p(95)=2.36s
+    iterations.................: 1000    6.516164/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
 
@@ -422,22 +422,22 @@ running performance test for styx server - using 1 node
     duration: -,   iterations: 1000
          vus: 10, max: 10
 
- running [==========================================================] 1000 / 100    done [==========================================================] 1000 / 1000
+    done [==========================================================] 1000 / 1000
 
     ✓ status was 200
 
     checks.....................: 100.00% ✓ 1000 ✗ 0
-    data_received..............: 1.3 MB  11 kB/s
+    data_received..............: 1.3 MB  10 kB/s
     data_sent..................: 198 kB  1.6 kB/s
-    http_req_blocked...........: avg=58.5µs   min=4µs     med=6µs      max=7.59ms p(90)=11µs     p(95)=16µs
-    http_req_connecting........: avg=28.3µs   min=0s      med=0s       max=4.06ms p(90)=0s       p(95)=0s
-    http_req_duration..........: avg=219.83ms min=83.94ms med=152.39ms max=1.53s  p(90)=367.45ms p(95)=609.53ms
-    http_req_receiving.........: avg=87.51µs  min=50µs    med=80µs     max=538µs  p(90)=108µs    p(95)=135.04µs
-    http_req_sending...........: avg=48.15µs  min=14µs    med=27µs     max=2.69ms p(90)=43µs     p(95)=59µs
+    http_req_blocked...........: avg=44.23µs  min=3µs     med=6µs      max=5.03ms p(90)=11µs     p(95)=16µs
+    http_req_connecting........: avg=26.91µs  min=0s      med=0s       max=4.04ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=233.01ms min=98.85ms med=207.85ms max=1.49s  p(90)=321.91ms p(95)=429.28ms
+    http_req_receiving.........: avg=88.39µs  min=50µs    med=82.5µs   max=1.13ms p(90)=103µs    p(95)=117.04µs
+    http_req_sending...........: avg=37.89µs  min=14µs    med=27µs     max=1.54ms p(90)=41.1µs   p(95)=52µs
     http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s     p(90)=0s       p(95)=0s
-    http_req_waiting...........: avg=219.69ms min=83.84ms med=152.29ms max=1.53s  p(90)=367.32ms p(95)=609.44ms
-    http_reqs..................: 1000    8.152861/s
-    iteration_duration.........: avg=1.22s    min=1.08s   med=1.15s    max=2.53s  p(90)=1.36s    p(95)=1.61s
-    iterations.................: 1000    8.152861/s
+    http_req_waiting...........: avg=232.88ms min=98.75ms med=207.69ms max=1.49s  p(90)=321.81ms p(95)=429.15ms
+    http_reqs..................: 1000    8.054285/s
+    iteration_duration.........: avg=1.23s    min=1.1s    med=1.21s    max=2.49s  p(90)=1.32s    p(95)=1.43s
+    iterations.................: 1000    8.054285/s
     vus........................: 10      min=10 max=10
     vus_max....................: 10      min=10 max=10
